@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { Service } from "../entities/service.entity";
 import { Workday } from "../entities/workday.entity";
 
 export const partialBarberSchema = z.object({
@@ -19,6 +20,17 @@ export const requiredBarberSchema = z.object({
     })
     .min(3)
     .max(50),
+  offeredServices: z
+    .array(
+      z.instanceof(Service, {
+        message: "Item must be a Service",
+      }),
+      {
+        invalid_type_error: "offeredServices must be an array of Services",
+        required_error: "offeredServices is required",
+      }
+    )
+    .nonempty("Barber must offer at least one service"),
   workdays: z
     .array(
       z.instanceof(Workday, {
