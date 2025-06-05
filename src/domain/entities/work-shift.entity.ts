@@ -21,6 +21,12 @@ export class WorkShift {
 
   // private methods
   private validate() {
+    if (this.props.startTime.minutes % 30 !== 0)
+      throw new InvalidTimeError("Start time must be a multiple of 30 minutes");
+
+    if (this.props.endTime.minutes % 30 !== 0)
+      throw new InvalidTimeError("End time must be a multiple of 30 minutes");
+
     if (this.props.endTime.isBefore(this.props.startTime))
       throw new InvalidTimeError("End time must be after start time");
 
@@ -48,5 +54,22 @@ export class WorkShift {
   // public methods
   public toJSON() {
     return this.props;
+  }
+
+  // getters
+  get id() {
+    return this.props.id;
+  }
+
+  get workdayId() {
+    return this.props.workdayId;
+  }
+
+  get startTime() {
+    return this.props.startTime;
+  }
+
+  get endTime() {
+    return this.props.endTime;
   }
 }

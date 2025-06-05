@@ -33,4 +33,19 @@ export class Service {
   }
 
   // getters
+  get id() {
+    return this.props.id;
+  }
+
+  get type() {
+    return this.props.type;
+  }
+
+  get priceInCents() {
+    return this.props.priceInCents;
+  }
+
+  get durationInMinutes() {
+    return this.props.durationInMinutes;
+  }
 }

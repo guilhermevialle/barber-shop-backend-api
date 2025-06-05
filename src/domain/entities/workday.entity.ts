@@ -31,4 +31,21 @@ export class Workday {
   public toJSON() {
     return this.props;
   }
+
+  // getters
+  get id() {
+    return this.props.id;
+  }
+
+  get barberId() {
+    return this.props.barberId;
+  }
+
+  get weekday() {
+    return this.props.weekday;
+  }
+
+  get workShifts() {
+    return this.props.workShifts;
+  }
 }

@@ -37,7 +37,7 @@ export class Barber {
     this.props.workdays.push(workday);
   }
 
-  public isAvailable() {
+  public isWorking() {
     return this.props.workdays.length > 0;
   }
 
