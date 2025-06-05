@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { Workday } from "../entities/workday.entity";
 
 export const partialBarberSchema = z.object({
   id: z
@@ -18,6 +19,18 @@ export const requiredBarberSchema = z.object({
     })
     .min(3)
     .max(50),
+  workdays: z
+    .array(
+      z.instanceof(Workday, {
+        message: "Item must be a Workday",
+      }),
+      {
+        invalid_type_error: "Workdays must be an array of Workdays",
+        required_error: "Workdays is required",
+      }
+    )
+    .min(0)
+    .max(7, "Workdays must be between 0 and 7"),
 });
 
 export type PartialBarberProps = z.infer<typeof partialBarberSchema>;

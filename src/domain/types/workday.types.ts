@@ -36,7 +36,7 @@ export const requiredWorkdaySchema = z.object({
         required_error: "WorkShifts is required",
       }
     )
-    .min(1),
+    .min(1, "WorkShifts must have at least one item"),
 });
 
 export type PartialWorkdayProps = z.infer<typeof partialWorkdaySchema>;

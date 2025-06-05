@@ -1,3 +1,4 @@
+import { Workday } from "../entities/workday.entity";
 import { idGeneratorService } from "../services/id-generator.service";
 import {
   BarberProps,
@@ -32,5 +33,24 @@ export class Barber {
     return this.props;
   }
 
+  public addWorkday(workday: Workday) {
+    this.props.workdays.push(workday);
+  }
+
+  public isAvailable() {
+    return this.props.workdays.length > 0;
+  }
+
   // getters
+  get id() {
+    return this.props.id;
+  }
+
+  get name() {
+    return this.props.name;
+  }
+
+  get workdays() {
+    return this.props.workdays;
+  }
 }
