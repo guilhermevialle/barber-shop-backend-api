@@ -1,7 +1,9 @@
 import { Appointment } from "@/domain/entities/appointment.entity";
 import { IAppointmentRepository } from "@/interfaces/repositories/appointment-repository.interface";
 import { IServiceRepository } from "@/interfaces/repositories/service-repository.interface";
-import { OverlappingAppointmentError } from "../errors/appointment-errors";
+import { IBarberAvailabilityService } from "@/interfaces/services/barber-availability-service.interface";
+import { addMinutes } from "date-fns";
+import { BarberNotAvailableError } from "../errors/barber-errors";
 import { ServiceNotFoundError } from "../errors/service-errors";
 
 type Request = {
@@ -16,7 +18,8 @@ type Response = Appointment;
 export class CreateAppointment {
   constructor(
     private readonly appointmentRepo: IAppointmentRepository,
-    private readonly serviceRepo: IServiceRepository
+    private readonly serviceRepo: IServiceRepository,
+    private readonly barberAvailabilityService: IBarberAvailabilityService
   ) {}
 
   async execute({
@@ -25,21 +28,22 @@ export class CreateAppointment {
     startAt,
     serviceId,
   }: Request): Promise<Response> {
-    const overlappingAppointment =
-      await this.appointmentRepo.findOverlappingAppointmentByBarber(
-        barberId,
-        startAt
-      );
-
-    if (overlappingAppointment)
-      throw new OverlappingAppointmentError(`
-       Appointment for barber ${barberId} at ${startAt} already exists
-        `);
-
     const service = await this.serviceRepo.findById(serviceId);
 
     if (!service)
       throw new ServiceNotFoundError(`Service ${serviceId} not found`);
+
+    const isBarberAvailable =
+      await this.barberAvailabilityService.isAvailableInRange(
+        barberId,
+        startAt,
+        addMinutes(startAt, service.durationInMinutes)
+      );
+
+    if (!isBarberAvailable)
+      throw new BarberNotAvailableError(
+        `Barber is not available at ${startAt}`
+      );
 
     const appointment = Appointment.create({
       barberId,

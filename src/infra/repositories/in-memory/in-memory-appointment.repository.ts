@@ -5,6 +5,23 @@ import { addDays, areIntervalsOverlapping } from "date-fns";
 export class InMemoryAppointmentRepository implements IAppointmentRepository {
   private storage: Appointment[] = [];
 
+  async findOverlappingAppointmentsByBarberInRange(
+    barberId: string,
+    startAt: Date,
+    endAt: Date
+  ): Promise<Appointment[]> {
+    return this.storage.filter((appointment) => {
+      return (
+        appointment.barberId === barberId &&
+        areIntervalsOverlapping(
+          { start: startAt, end: endAt },
+          { start: appointment.startAt, end: appointment.endAt },
+          { inclusive: true }
+        )
+      );
+    });
+  }
+
   async findOverlappingAppointmentByBarber(
     barberId: string,
     startAt: Date,

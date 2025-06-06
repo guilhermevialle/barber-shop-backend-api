@@ -9,6 +9,11 @@ export interface IAppointmentRepository {
     startAt: Date,
     ignoreId?: string
   ): Promise<Appointment | null>;
+  findOverlappingAppointmentsByBarberInRange(
+    barberId: string,
+    startAt: Date,
+    endAt: Date
+  ): Promise<Appointment[]>;
   findManyByCustomerId(id: string): Promise<Appointment[]>;
   findManyByBarberId(id: string): Promise<Appointment[]>;
   findAll(): Promise<Appointment[]>;
