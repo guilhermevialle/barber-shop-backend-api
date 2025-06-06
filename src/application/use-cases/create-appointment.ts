@@ -41,9 +41,7 @@ export class CreateAppointment {
       );
 
     if (!isBarberAvailable)
-      throw new BarberNotAvailableError(
-        `Barber is not available at ${startAt}`
-      );
+      throw new BarberNotAvailableError(`Barber not available this time.`);
 
     const appointment = Appointment.create({
       barberId,

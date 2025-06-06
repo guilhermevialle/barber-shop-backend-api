@@ -16,7 +16,6 @@ export class IdGeneratorService implements IIdGeneratorService {
 
   isDefaultValid(id: string): boolean {
     if (!id) return false;
-    if (id.includes("-")) return false;
     if (id.length !== 21) return false;
     if (typeof id !== "string") return false;
 
