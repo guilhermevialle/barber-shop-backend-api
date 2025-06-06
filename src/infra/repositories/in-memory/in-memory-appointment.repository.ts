@@ -7,11 +7,13 @@ export class InMemoryAppointmentRepository implements IAppointmentRepository {
 
   async findOverlappingAppointmentByBarber(
     barberId: string,
-    startAt: Date
+    startAt: Date,
+    ignoreId?: string
   ): Promise<Appointment | null> {
     const appointment = this.storage.find(
       (appointment) =>
         appointment.barberId === barberId &&
+        appointment.id !== ignoreId &&
         areIntervalsOverlapping(
           { start: startAt, end: addDays(startAt, 30) },
           { start: appointment.startAt, end: appointment.endAt },

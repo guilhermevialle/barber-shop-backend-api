@@ -14,7 +14,6 @@ type Request = {
 type Response = Appointment;
 
 export class CreateAppointment {
-  private now = new Date();
   constructor(
     private readonly appointmentRepo: IAppointmentRepository,
     private readonly serviceRepo: IServiceRepository
