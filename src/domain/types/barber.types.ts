@@ -1,6 +1,6 @@
 import { z } from "zod";
-import { Service } from "../entities/service.entity";
 import { Workday } from "../entities/workday.entity";
+import { Username } from "../value-objects/username.vo";
 
 export const partialBarberSchema = z.object({
   id: z
@@ -20,17 +20,9 @@ export const requiredBarberSchema = z.object({
     })
     .min(3)
     .max(50),
-  offeredServices: z
-    .array(
-      z.instanceof(Service, {
-        message: "Item must be a Service",
-      }),
-      {
-        invalid_type_error: "offeredServices must be an array of Services",
-        required_error: "offeredServices is required",
-      }
-    )
-    .nonempty("Barber must offer at least one service"),
+  username: z.instanceof(Username, {
+    message: "Username must be a valid Username",
+  }),
   workdays: z
     .array(
       z.instanceof(Workday, {

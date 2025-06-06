@@ -1,9 +1,7 @@
 import { Customer } from "@/domain/entities/customer.entity";
-import { ICustomerRepositoryInterface } from "@/interfaces/repositories/customer-repository.interface";
+import { ICustomerRepository } from "@/interfaces/repositories/customer-repository.interface";
 
-export class InMemoryCustomerRepository
-  implements ICustomerRepositoryInterface
-{
+export class InMemoryCustomerRepository implements ICustomerRepository {
   private storage: Customer[] = [];
 
   async findById(id: string): Promise<Customer | null> {

@@ -53,4 +53,8 @@ export class Barber {
   get workdays() {
     return this.props.workdays;
   }
+
+  get username() {
+    return this.props.username;
+  }
 }

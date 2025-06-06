@@ -4,6 +4,14 @@ import { IBarberRepository } from "@/interfaces/repositories/barber-repository.i
 export class InMemoryBarberRepository implements IBarberRepository {
   private storage: Barber[] = [];
 
+  async findByUsername(username: string): Promise<Barber | null> {
+    const barber = this.storage.find(
+      (barber) => barber.username.value === username
+    );
+
+    return barber ?? null;
+  }
+
   async findById(id: string): Promise<Barber | null> {
     const customer = this.storage.find((customer) => customer.id === id);
 
