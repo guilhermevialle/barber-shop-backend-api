@@ -55,6 +55,10 @@ export class Time {
     return referenceDate;
   }
 
+  public isLessOrEqual(time: Time): boolean {
+    return this._minutes <= time._minutes;
+  }
+
   public addMinutes(minutes: number): Time {
     return Time.create(this._minutes + minutes);
   }

@@ -47,7 +47,7 @@ export const requiredAppointmentSchema = z.object({
     .int()
     .min(30)
     .max(90)
-    .refine((value) => value % 30 === 0, "Duration must be a multiple of 30"),
+    .refine((value) => value % 15 === 0, "Duration must be a multiple of 15"),
 });
 
 export type PartialAppointmentProps = z.infer<typeof partialAppointmentSchema>;
