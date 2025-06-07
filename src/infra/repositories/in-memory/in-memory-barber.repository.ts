@@ -33,25 +33,23 @@ export class InMemoryBarberRepository implements IBarberRepository {
   }
 
   async findById(id: string): Promise<Barber | null> {
-    const customer = this.storage.find((customer) => customer.id === id);
+    const barber = this.storage.find((barber) => barber.id === id);
 
-    return customer ?? null;
+    return barber ?? null;
   }
 
-  async save(customer: Barber): Promise<void> {
-    this.storage.push(customer);
+  async save(barber: Barber): Promise<void> {
+    this.storage.push(barber);
   }
 
-  async update(customer: Barber): Promise<void> {
-    const index = this.storage.findIndex(
-      (customer) => customer.id === customer.id
-    );
+  async update(barber: Barber): Promise<void> {
+    const index = this.storage.findIndex((barber) => barber.id === barber.id);
 
     if (index === -1) {
-      throw new Error("Customer not found");
+      throw new Error("barber not found");
     }
 
-    this.storage[index] = customer;
+    this.storage[index] = barber;
   }
 
   async findAll(): Promise<Barber[]> {

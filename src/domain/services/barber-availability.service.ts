@@ -9,7 +9,10 @@ export class BarberAvailabilityService implements IBarberAvailabilityService {
     private readonly appointmentRepo: IAppointmentRepository
   ) {}
 
-  async getSlotsByBarberAndWeekday(barberId: string, weekday: number) {
+  async getAvailableTimeSlotsByWeekday(
+    barberId: string,
+    weekday: number
+  ): Promise<string[]> {
     const appointments =
       await this.appointmentRepo.findManyByBarberId(barberId);
     const workShifts = await this.barberRepo.findWorkShiftsByWeekdayAndId(
@@ -47,8 +50,11 @@ export class BarberAvailabilityService implements IBarberAvailabilityService {
       await this.appointmentRepo.findOverlappingAppointmentsByBarberInRange(
         barberId,
         startAt,
-        endAt
+        endAt,
+        { inclusive: false }
       );
+
+    console.log(overlappingAppointments);
 
     return overlappingAppointments.length === 0;
   }

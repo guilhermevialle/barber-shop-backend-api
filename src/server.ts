@@ -1,3 +1,4 @@
+import { addMinutes } from "date-fns";
 import { Barber } from "./domain/aggregates/barber.aggregate";
 import { Appointment } from "./domain/entities/appointment.entity";
 import { WorkShift } from "./domain/entities/work-shift.entity";
@@ -10,116 +11,86 @@ import { Username } from "./domain/value-objects/username.vo";
 import { InMemoryAppointmentRepository } from "./infra/repositories/in-memory/in-memory-appointment.repository";
 import { InMemoryBarberRepository } from "./infra/repositories/in-memory/in-memory-barber.repository";
 
-const barberRepo = new InMemoryBarberRepository();
-const appointmentRepo = new InMemoryAppointmentRepository();
-const barberAvailabilityService = new BarberAvailabilityService(
-  barberRepo,
-  appointmentRepo
-);
-
 (async () => {
-  const barberId = idGeneratorService.generateDefault();
-  const workdayId = idGeneratorService.generateDefault();
+  try {
+    const barberRepo = new InMemoryBarberRepository();
+    const appointmentRepo = new InMemoryAppointmentRepository();
+    const barberAvailabilityService = new BarberAvailabilityService(
+      barberRepo,
+      appointmentRepo
+    );
 
-  appointmentRepo.save(
-    Appointment.create({
-      barberId,
-      customerId: idGeneratorService.generateDefault(),
-      startAt: DateFactory.hour(8).minute(0).build(),
-      serviceId: idGeneratorService.generateDefault(),
-      priceInCents: 2000,
-      durationInMinutes: 60,
-    })
-  );
+    const barber = Barber.create({
+      name: "John Doe",
+      username: Username.create("johndoe"),
+      workdays: [],
+    });
 
-  appointmentRepo.save(
-    Appointment.create({
-      barberId,
-      customerId: idGeneratorService.generateDefault(),
-      startAt: DateFactory.hour(9).minute(0).build(),
-      serviceId: idGeneratorService.generateDefault(),
-      priceInCents: 2000,
-      durationInMinutes: 45,
-    })
-  );
+    const workdayId = idGeneratorService.generateDefault();
 
-  appointmentRepo.save(
-    Appointment.create({
-      barberId,
-      customerId: idGeneratorService.generateDefault(),
-      startAt: DateFactory.hour(10).minute(15).build(),
-      serviceId: idGeneratorService.generateDefault(),
-      priceInCents: 2000,
-      durationInMinutes: 45,
-    })
-  );
-
-  appointmentRepo.save(
-    Appointment.create({
-      barberId,
-      customerId: idGeneratorService.generateDefault(),
-      startAt: DateFactory.hour(13).minute(0).build(),
-      serviceId: idGeneratorService.generateDefault(),
-      priceInCents: 2000,
-      durationInMinutes: 90,
-    })
-  );
-
-  appointmentRepo.save(
-    Appointment.create({
-      barberId,
-      customerId: idGeneratorService.generateDefault(),
-      startAt: DateFactory.hour(9).minute(45).build(),
-      serviceId: idGeneratorService.generateDefault(),
-      priceInCents: 2000,
-      durationInMinutes: 30,
-    })
-  );
-
-  appointmentRepo.save(
-    Appointment.create({
-      barberId,
-      customerId: idGeneratorService.generateDefault(),
-      startAt: DateFactory.hour(16).minute(0).build(),
-      serviceId: idGeneratorService.generateDefault(),
-      priceInCents: 2000,
-      durationInMinutes: 45,
-    })
-  );
-
-  id: idGeneratorService.generateDefault(),
-    await barberRepo.save(
-      Barber.restore({
-        id: barberId,
-        name: "Fulano",
-        username: Username.create("fulano"),
-        workdays: [
-          Workday.restore({
-            id: workdayId,
-            weekday: 1,
-            barberId,
-            workShifts: [
-              WorkShift.restore({
-                id: idGeneratorService.generateDefault(),
-                workdayId,
-                startTime: Time.create("08:00"),
-                endTime: Time.create("12:00"),
-              }),
-              WorkShift.restore({
-                id: idGeneratorService.generateDefault(),
-                workdayId,
-                startTime: Time.create("13:00"),
-                endTime: Time.create("17:30"),
-              }),
-            ],
+    barber.addWorkday(
+      Workday.restore({
+        id: idGeneratorService.generateDefault(),
+        barberId: barber.id,
+        weekday: 1,
+        workShifts: [
+          WorkShift.create({
+            workdayId: workdayId,
+            startTime: Time.create("08:00"),
+            endTime: Time.create("12:00"),
+          }),
+          WorkShift.create({
+            workdayId: workdayId,
+            startTime: Time.create("13:00"),
+            endTime: Time.create("17:30"),
           }),
         ],
       })
     );
 
-  const slots = await barberAvailabilityService.getSlotsByBarberAndWeekday(
-    barberId,
-    1
-  );
-  console.log(slots);
+    await barberRepo.save(barber);
+
+    const _7 = DateFactory.hour(7).minute(0).build();
+    const _7_45 = DateFactory.hour(7).minute(45).build();
+    const _8_15 = DateFactory.hour(8).minute(15).build();
+
+    await appointmentRepo.save(
+      Appointment.create({
+        barberId: barber.id,
+        customerId: idGeneratorService.generateDefault(),
+        serviceId: idGeneratorService.generateDefault(),
+        startAt: _7_45,
+        durationInMinutes: 30,
+        priceInCents: 2000,
+      })
+    );
+
+    await appointmentRepo.save(
+      Appointment.create({
+        barberId: barber.id,
+        customerId: idGeneratorService.generateDefault(),
+        serviceId: idGeneratorService.generateDefault(),
+        startAt: _8_15,
+        durationInMinutes: 60,
+        priceInCents: 2000,
+      })
+    );
+
+    const now = new Date();
+
+    const isAvailable = await barberAvailabilityService.isAvailableInRange(
+      barber.id,
+      addMinutes(_7, 45),
+      addMinutes(addMinutes(_7, 45), 30)
+    );
+
+    console.log({ isAvailable });
+  } catch (error: any) {
+    console.log({
+      error: "error",
+      message: error.message,
+      stack: error.stack,
+      name: error.name,
+    });
+  }
 })();
