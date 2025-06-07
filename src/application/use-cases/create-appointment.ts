@@ -5,6 +5,7 @@ import { ICustomerRepository } from "@/interfaces/repositories/customer-reposito
 import { IServiceRepository } from "@/interfaces/repositories/service-repository.interface";
 import { IBarberAvailabilityService } from "@/interfaces/services/barber-availability-service.interface";
 import { addMinutes } from "date-fns";
+import { CreateAppointmentDto } from "../dtos/create-appointment.dto";
 import { BarberNotAvailableError } from "../errors/barber-errors";
 import {
   BarberNotFoundError,
@@ -12,12 +13,7 @@ import {
   ServiceNotFoundError,
 } from "../errors/service-errors";
 
-type Request = {
-  barberId: string;
-  customerId: string;
-  serviceId: string;
-  startAt: Date;
-};
+type Request = CreateAppointmentDto;
 
 type Response = Appointment;
 

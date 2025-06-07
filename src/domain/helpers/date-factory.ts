@@ -92,8 +92,8 @@ export class DateFactory {
     return this;
   }
 
-  public build(): Date {
-    const now = new Date();
+  public build(date?: Date): Date {
+    const now = date ?? new Date();
 
     return new Date(
       this._year ?? now.getFullYear(),

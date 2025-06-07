@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "vitest",
-    "dev": "tsnd --respawn --quiet --clear --transpile-only --ignore-watch node_modules src/server.ts"
+    "test:file": "vitest --run",
+    "dev": "tsnd --respawn --quiet --clear --transpile-only --require tsconfig-paths/register --ignore-watch node_modules src/server.ts"
   },
   "keywords": [],
   "author": "",
@@ -16,6 +17,7 @@
     "nanoid": "^3.3.11",
     "prettier": "^3.5.3",
     "ts-node-dev": "^2.0.0",
+    "tsconfig-paths": "^4.2.0",
     "typescript": "^5.8.3",
     "vitest": "^3.2.2",
     "zod": "^3.25.51"

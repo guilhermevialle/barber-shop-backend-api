@@ -1,6 +1,7 @@
 import { IAppointmentRepository } from "@/interfaces/repositories/appointment-repository.interface";
 import { IBarberRepository } from "@/interfaces/repositories/barber-repository.interface";
 import { IBarberAvailabilityService } from "@/interfaces/services/barber-availability-service.interface";
+import { endOfDay, getDay, startOfDay } from "date-fns";
 import { Time } from "../value-objects/time.vo";
 
 export class BarberAvailabilityService implements IBarberAvailabilityService {
@@ -9,12 +10,22 @@ export class BarberAvailabilityService implements IBarberAvailabilityService {
     private readonly appointmentRepo: IAppointmentRepository
   ) {}
 
-  async getAvailableTimeSlotsByWeekday(
+  async getAvailableTimeSlotsByDate(
     barberId: string,
-    weekday: number
+    date: Date
   ): Promise<string[]> {
+    const weekday = getDay(date);
+
+    const dayStart = startOfDay(date);
+    const dayEnd = endOfDay(date);
+
     const appointments =
-      await this.appointmentRepo.findManyByBarberId(barberId);
+      await this.appointmentRepo.findOverlappingAppointmentsByBarberInRange(
+        barberId,
+        dayStart,
+        dayEnd
+      );
+
     const workShifts = await this.barberRepo.findWorkShiftsByWeekdayAndId(
       barberId,
       weekday

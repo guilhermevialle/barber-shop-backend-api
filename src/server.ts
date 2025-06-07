@@ -1,71 +1,53 @@
 import { Barber } from "./domain/aggregates/barber.aggregate";
-import { Appointment } from "./domain/entities/appointment.entity";
-import { WorkShift } from "./domain/entities/work-shift.entity";
-import { Workday } from "./domain/entities/workday.entity";
-import { DateFactory } from "./domain/helpers/date-factory";
+import { WorkdayFactory } from "./domain/helpers/workday-factory";
 import { BarberAvailabilityService } from "./domain/services/barber-availability.service";
 import { idGeneratorService } from "./domain/services/id-generator.service";
-import { Time } from "./domain/value-objects/time.vo";
 import { Username } from "./domain/value-objects/username.vo";
 import { InMemoryAppointmentRepository } from "./infra/repositories/in-memory/in-memory-appointment.repository";
 import { InMemoryBarberRepository } from "./infra/repositories/in-memory/in-memory-barber.repository";
 
-(async () => {
-  try {
-    const barberRepo = new InMemoryBarberRepository();
-    const appointmentRepo = new InMemoryAppointmentRepository();
-    const barberAvailabilityService = new BarberAvailabilityService(
-      barberRepo,
-      appointmentRepo
-    );
+async function main() {
+  const barber = Barber.create({
+    name: "John Doe",
+    username: Username.create("johndoe"),
+    workdays: [],
+  });
 
-    const barber = Barber.create({
-      name: "John Doe",
-      username: Username.create("johndoe"),
-      workdays: [],
-    });
+  const barberRepo = new InMemoryBarberRepository();
+  const appointmentRepo = new InMemoryAppointmentRepository();
+  const workdayFactory = new WorkdayFactory(idGeneratorService);
 
-    const workdayId = idGeneratorService.generateDefault();
+  const availabilityService = new BarberAvailabilityService(
+    barberRepo,
+    appointmentRepo
+  );
 
-    barber.addWorkday(
-      Workday.restore({
-        id: idGeneratorService.generateDefault(),
-        barberId: barber.id,
-        weekday: 1,
-        workShifts: [
-          WorkShift.create({
-            workdayId: workdayId,
-            startTime: Time.create("08:00"),
-            endTime: Time.create("12:00"),
-          }),
-          WorkShift.create({
-            workdayId: workdayId,
-            startTime: Time.create("13:00"),
-            endTime: Time.create("17:30"),
-          }),
-        ],
-      })
-    );
+  const workdays = workdayFactory.createMany({
+    barberId: barber.id,
+    between: [0, 6],
+    shifts: [
+      {
+        startTime: "08:00",
+        endTime: "10:00",
+      },
+      {
+        startTime: "13:00",
+        endTime: "14:00",
+      },
+    ],
+  });
 
-    await barberRepo.save(barber);
+  barber.addWorkdays(workdays);
+  await barberRepo.save(barber);
 
-    const _7 = DateFactory.hour(7).minute(0).build();
-    const _8_30 = DateFactory.hour(8).minute(30).build();
+  const today = new Date();
+  const slots = await availabilityService.getAvailableTimeSlotsByDate(
+    barber.id,
+    today
+  );
 
-    await appointmentRepo.save(
-      Appointment.create({
-        barberId: barber.id,
-        customerId: idGeneratorService.generateDefault(),
-        serviceId: idGeneratorService.generateDefault(),
-        startAt: _8_30,
-        durationInMinutes: 60,
-        priceInCents: 2000,
-      })
-    );
-  } catch (error: any) {
-    console.log({
-      message: error.message,
-      name: error.name,
-    });
-  }
-})();
+  console.log(`Available slots for ${today.toDateString()}:`);
+  console.log(slots);
+}
+
+main().catch(console.error);

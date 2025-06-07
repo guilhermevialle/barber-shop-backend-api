@@ -33,7 +33,22 @@ export class Barber {
     return this.props;
   }
 
+  public updateWorkday(workday: Workday) {
+    const index = this.props.workdays.findIndex(
+      (w) => w.weekday === workday.weekday
+    );
+
+    if (index === -1) return;
+
+    this.props.workdays[index] = workday;
+  }
+
+  public addWorkdays(workdays: Workday[]) {
+    workdays.forEach((workday) => this.addWorkday(workday));
+  }
+
   public addWorkday(workday: Workday) {
+    this.updateWorkday(workday);
     this.props.workdays.push(workday);
   }
 

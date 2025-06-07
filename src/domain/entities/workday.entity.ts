@@ -45,7 +45,7 @@ export class Workday {
     return this.props.weekday;
   }
 
-  get workShifts() {
-    return this.props.workShifts;
+  get shifts() {
+    return this.props.shifts;
   }
 }

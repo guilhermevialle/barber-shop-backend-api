@@ -9,11 +9,7 @@ export class InMemoryAppointmentRepository implements IAppointmentRepository {
     barberId: string,
     start: Date,
     end: Date,
-    options: {
-      inclusive?: boolean;
-    } = {
-      inclusive: true,
-    }
+    options: { inclusive?: boolean } = { inclusive: true }
   ): Promise<Appointment[]> {
     return this.storage.filter((appointment) => {
       return (

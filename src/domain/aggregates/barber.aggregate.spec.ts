@@ -16,7 +16,7 @@ describe("Barber Aggregate", () => {
       id: workdayId,
       barberId,
       weekday: index,
-      workShifts: [
+      shifts: [
         WorkShift.create({
           workdayId,
           startTime: new Time("08:00"),
@@ -96,7 +96,7 @@ describe("Barber Aggregate", () => {
       id: idGeneratorService.generateDefault(),
       barberId,
       weekday: 1,
-      workShifts: [
+      shifts: [
         WorkShift.create({
           workdayId,
           startTime: new Time("08:00"),

@@ -19,8 +19,8 @@ export class InMemoryBarberRepository implements IBarberRepository {
     const barber = this.storage.find((barber) => barber.id === id);
 
     return (
-      barber?.workdays.find((workday) => workday.weekday === weekday)
-        ?.workShifts ?? []
+      barber?.workdays.find((workday) => workday.weekday === weekday)?.shifts ??
+      []
     );
   }
 

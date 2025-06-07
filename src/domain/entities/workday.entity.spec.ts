@@ -15,7 +15,7 @@ describe("Workday Entity", () => {
   const validProps = {
     barberId,
     weekday: 2,
-    workShifts: [shift],
+    shifts: [shift],
   };
 
   it("should create a valid Workday", () => {
@@ -23,11 +23,11 @@ describe("Workday Entity", () => {
     expect(workday).toBeInstanceOf(Workday);
     expect(workday.barberId).toBe(validProps.barberId);
     expect(workday.weekday).toBe(validProps.weekday);
-    expect(workday.workShifts.length).toBe(1);
+    expect(workday.shifts.length).toBe(1);
   });
 
-  it("should throw if workShifts is empty", () => {
-    const props = { ...validProps, workShifts: [] };
+  it("should throw if shifts is empty", () => {
+    const props = { ...validProps, shifts: [] };
     expect(() => Workday.create(props as any)).toThrow();
   });
 

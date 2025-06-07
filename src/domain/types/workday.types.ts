@@ -16,7 +16,7 @@ export const requiredWorkdaySchema = z.object({
     .int("Weekday must be an integer")
     .min(0)
     .max(6),
-  workShifts: z
+  shifts: z
     .array(
       z.instanceof(WorkShift, {
         message: "Item must be a WorkShift",

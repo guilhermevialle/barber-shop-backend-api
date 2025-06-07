@@ -1,7 +1,7 @@
 export interface IBarberAvailabilityService {
-  getAvailableTimeSlotsByWeekday: (
+  getAvailableTimeSlotsByDate: (
     barberId: string,
-    weekday: number
+    date: Date
   ) => Promise<string[]>;
   isAvailableInRange: (
     barberId: string,
