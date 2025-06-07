@@ -1,14 +1,9 @@
 import { z } from "zod";
+import { idSchema } from "../utils/id-schema";
 import { Username } from "../value-objects/username.vo";
 
 export const partialCustomerSchema = z.object({
-  id: z
-    .string({
-      required_error: "Id is required",
-      invalid_type_error: "Id must be a string",
-    })
-    .length(21, "Id must be 21 characters long")
-    .optional(),
+  id: idSchema().optional(),
 });
 
 export const requiredCustomerSchema = z.object({

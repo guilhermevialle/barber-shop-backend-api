@@ -1,37 +1,30 @@
+import { differenceInDays, isPast } from "date-fns";
 import { z } from "zod";
+import { idSchema } from "../utils/id-schema";
+import { Time } from "../value-objects/time.vo";
 
 export const partialAppointmentSchema = z.object({
-  id: z
-    .string({
-      required_error: "Id is required",
-      invalid_type_error: "Id must be a string",
-    })
-    .optional(),
+  id: idSchema().optional(),
 });
 
 export const requiredAppointmentSchema = z.object({
-  customerId: z
-    .string({
-      required_error: "CustomerId is required",
-      invalid_type_error: "CustomerId must be a string",
+  customerId: idSchema("customer"),
+  barberId: idSchema("barber"),
+  serviceId: idSchema("service"),
+  startAt: z
+    .date({
+      required_error: "StartAt is required",
+      invalid_type_error: "StartAt must be a date",
     })
-    .length(21),
-  barberId: z
-    .string({
-      required_error: "BarberId is required",
-      invalid_type_error: "BarberId must be a string",
+    .refine((date) => !isPast(date), {
+      message: "Start date must be in the future",
     })
-    .length(21),
-  serviceId: z
-    .string({
-      required_error: "ServiceId is required",
-      invalid_type_error: "ServiceId must be a string",
+    .refine((date) => differenceInDays(date, new Date()) <= 30, {
+      message: "Start date must be in the next 30 days",
     })
-    .length(21),
-  startAt: z.date({
-    required_error: "StartAt is required",
-    invalid_type_error: "StartAt must be a date",
-  }),
+    .refine((date) => Time.create(date).isDivisibleBy(15), {
+      message: "Start time must be a multiple of 15 minutes",
+    }),
   priceInCents: z
     .number({
       required_error: "Price is required",

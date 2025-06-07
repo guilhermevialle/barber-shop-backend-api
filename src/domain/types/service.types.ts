@@ -1,13 +1,8 @@
 import { z } from "zod";
+import { idSchema } from "../utils/id-schema";
 
 export const partialServiceSchema = z.object({
-  id: z
-    .string({
-      required_error: "Id is required",
-      invalid_type_error: "Id must be a string",
-    })
-    .length(21)
-    .optional(),
+  id: idSchema().optional(),
 });
 
 export const requiredServiceSchema = z.object({

@@ -75,6 +75,10 @@ export class Time {
     return Time.create(this._minutes - hours * 60);
   }
 
+  public isDivisibleBy(divisor: number): boolean {
+    return this._minutes % divisor === 0;
+  }
+
   // getters
   get minutes(): number {
     return this._minutes;

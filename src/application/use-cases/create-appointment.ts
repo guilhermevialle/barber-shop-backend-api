@@ -1,56 +1,77 @@
 import { Appointment } from "@/domain/entities/appointment.entity";
 import { IAppointmentRepository } from "@/interfaces/repositories/appointment-repository.interface";
+import { IBarberRepository } from "@/interfaces/repositories/barber-repository.interface";
+import { ICustomerRepository } from "@/interfaces/repositories/customer-repository.interface";
 import { IServiceRepository } from "@/interfaces/repositories/service-repository.interface";
 import { IBarberAvailabilityService } from "@/interfaces/services/barber-availability-service.interface";
 import { addMinutes } from "date-fns";
 import { BarberNotAvailableError } from "../errors/barber-errors";
-import { ServiceNotFoundError } from "../errors/service-errors";
+import {
+  BarberNotFoundError,
+  CustomerNotFoundError,
+  ServiceNotFoundError,
+} from "../errors/service-errors";
 
 type Request = {
   barberId: string;
   customerId: string;
-  startAt: Date;
   serviceId: string;
+  startAt: Date;
 };
 
 type Response = Appointment;
 
 export class CreateAppointment {
   constructor(
-    private readonly appointmentRepo: IAppointmentRepository,
+    private readonly barberRepo: IBarberRepository,
+    private readonly customerRepo: ICustomerRepository,
     private readonly serviceRepo: IServiceRepository,
+    private readonly appointmentRepo: IAppointmentRepository,
     private readonly barberAvailabilityService: IBarberAvailabilityService
   ) {}
 
   async execute({
     barberId,
     customerId,
-    startAt,
     serviceId,
+    startAt,
   }: Request): Promise<Response> {
     const service = await this.serviceRepo.findById(serviceId);
 
     if (!service)
       throw new ServiceNotFoundError(`Service ${serviceId} not found`);
 
-    const isBarberAvailable =
+    const barber = await this.barberRepo.findById(barberId);
+
+    if (!barber) throw new BarberNotFoundError(`Barber ${barberId} not found`);
+
+    const customer = await this.customerRepo.findById(customerId);
+
+    if (!customer)
+      throw new CustomerNotFoundError(`Customer ${customerId} not found`);
+
+    const barberIsAvailable =
       await this.barberAvailabilityService.isAvailableInRange(
         barberId,
         startAt,
         addMinutes(startAt, service.durationInMinutes)
       );
 
-    if (!isBarberAvailable)
-      throw new BarberNotAvailableError(`Barber not available this time.`);
+    if (!barberIsAvailable)
+      throw new BarberNotAvailableError(
+        "Barber is not available in the selected time slot"
+      );
 
     const appointment = Appointment.create({
       barberId,
       customerId,
-      startAt,
       serviceId,
+      startAt,
       durationInMinutes: service.durationInMinutes,
       priceInCents: service.priceInCents,
     });
+
+    await this.appointmentRepo.save(appointment);
 
     return appointment;
   }

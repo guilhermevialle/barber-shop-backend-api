@@ -1,23 +1,13 @@
 import { z } from "zod";
 import { WorkShift } from "../entities/work-shift.entity";
+import { idSchema } from "../utils/id-schema";
 
 export const partialWorkdaySchema = z.object({
-  id: z
-    .string({
-      required_error: "Id is required",
-      invalid_type_error: "Id must be a string",
-    })
-    .length(21, "Id must be 21 characters long")
-    .optional(),
+  id: idSchema().optional(),
 });
 
 export const requiredWorkdaySchema = z.object({
-  barberId: z
-    .string({
-      required_error: "BarberId is required",
-      invalid_type_error: "BarberId must be a string",
-    })
-    .length(21, "BarberId must be 21 characters long"),
+  barberId: idSchema("barber"),
   weekday: z
     .number({
       required_error: "Weekday is required",

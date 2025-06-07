@@ -1,15 +1,10 @@
 import { z } from "zod";
 import { Workday } from "../entities/workday.entity";
+import { idSchema } from "../utils/id-schema";
 import { Username } from "../value-objects/username.vo";
 
 export const partialBarberSchema = z.object({
-  id: z
-    .string({
-      required_error: "Id is required",
-      invalid_type_error: "Id must be a string",
-    })
-    .length(21)
-    .optional(),
+  id: idSchema().optional(),
 });
 
 export const requiredBarberSchema = z.object({

@@ -1,23 +1,13 @@
 import { z } from "zod";
+import { idSchema } from "../utils/id-schema";
 import { Time } from "../value-objects/time.vo";
 
 export const partialWorkShiftSchema = z.object({
-  id: z
-    .string({
-      required_error: "Id is required",
-      invalid_type_error: "Id must be a string",
-    })
-    .length(21)
-    .optional(),
+  id: idSchema().optional(),
 });
 
 export const requiredWorkShiftSchema = z.object({
-  workdayId: z
-    .string({
-      required_error: "WorkdayId is required",
-      invalid_type_error: "WorkdayId must be a string",
-    })
-    .length(21, "WorkdayId must be 21 characters long"),
+  workdayId: idSchema("workday"),
   startTime: z.instanceof(Time, {
     message: "Start time must be a valid Time",
   }),

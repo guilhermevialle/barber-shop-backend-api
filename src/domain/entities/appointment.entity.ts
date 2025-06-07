@@ -1,5 +1,4 @@
-import { addDays, addMinutes, isPast } from "date-fns";
-import { DateTooLateError, PastDateError } from "../errors/shared-errors";
+import { addMinutes } from "date-fns";
 import { idGeneratorService } from "../services/id-generator.service";
 import {
   AppointmentProps,
@@ -17,16 +16,6 @@ export class Appointment {
     };
 
     appointmentSchema.parse(this.props);
-    this.validate();
-  }
-
-  // private methods
-  private validate() {
-    if (isPast(this.props.startAt))
-      throw new PastDateError("Start date must be in the future");
-
-    if (this.props.startAt.getTime() > addDays(Date.now(), 30).getTime())
-      throw new DateTooLateError("Start date must be in the next 30 days");
   }
 
   // static methods

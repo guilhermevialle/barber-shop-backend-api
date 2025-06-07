@@ -1,4 +1,3 @@
-import { addMinutes } from "date-fns";
 import { Barber } from "./domain/aggregates/barber.aggregate";
 import { Appointment } from "./domain/entities/appointment.entity";
 import { WorkShift } from "./domain/entities/work-shift.entity";
@@ -51,45 +50,21 @@ import { InMemoryBarberRepository } from "./infra/repositories/in-memory/in-memo
     await barberRepo.save(barber);
 
     const _7 = DateFactory.hour(7).minute(0).build();
-    const _7_45 = DateFactory.hour(7).minute(45).build();
-    const _8_15 = DateFactory.hour(8).minute(15).build();
+    const _8_30 = DateFactory.hour(8).minute(30).build();
 
     await appointmentRepo.save(
       Appointment.create({
         barberId: barber.id,
         customerId: idGeneratorService.generateDefault(),
         serviceId: idGeneratorService.generateDefault(),
-        startAt: _7_45,
-        durationInMinutes: 30,
-        priceInCents: 2000,
-      })
-    );
-
-    await appointmentRepo.save(
-      Appointment.create({
-        barberId: barber.id,
-        customerId: idGeneratorService.generateDefault(),
-        serviceId: idGeneratorService.generateDefault(),
-        startAt: _8_15,
+        startAt: _8_30,
         durationInMinutes: 60,
         priceInCents: 2000,
       })
     );
-
-    const now = new Date();
-
-    const isAvailable = await barberAvailabilityService.isAvailableInRange(
-      barber.id,
-      addMinutes(_7, 45),
-      addMinutes(addMinutes(_7, 45), 30)
-    );
-
-    console.log({ isAvailable });
   } catch (error: any) {
     console.log({
-      error: "error",
       message: error.message,
-      stack: error.stack,
       name: error.name,
     });
   }
