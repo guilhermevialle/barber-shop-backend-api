@@ -2,12 +2,9 @@ import { CustomerAlreadyExistsError } from "@/application/errors/customer-errors
 import { Customer } from "@/domain/entities/customer.entity";
 import { Username } from "@/domain/value-objects/username.vo";
 import { ICustomerRepository } from "@/interfaces/repositories/customer-repository.interface";
+import { CreateCustomerDto } from "../dtos/create-customer.dto";
 
-type Request = {
-  name: string;
-  username: string;
-};
-
+type Request = CreateCustomerDto;
 type Response = Customer;
 
 export class CreateCustomer {

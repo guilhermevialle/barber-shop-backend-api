@@ -9,7 +9,6 @@ import { Username } from "@/domain/value-objects/username.vo";
 import { IBarberRepository } from "@/interfaces/repositories/barber-repository.interface";
 
 type Request = CreateBarberDto;
-
 type Response = Barber;
 
 export class CreateBarber {

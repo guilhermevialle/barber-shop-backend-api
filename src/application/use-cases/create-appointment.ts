@@ -14,7 +14,6 @@ import { addMinutes } from "date-fns";
 import { CustomerNotFoundError } from "../errors/customer-errors";
 
 type Request = CreateAppointmentDto;
-
 type Response = Appointment;
 
 export class CreateAppointment {

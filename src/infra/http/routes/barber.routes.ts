@@ -4,4 +4,8 @@ import { FastifyInstance } from "fastify";
 export function barberRoutes(app: FastifyInstance) {
   app.post("/barber", barberController.create.bind(barberController));
   app.get("/barber", barberController.getBarberList.bind(barberController));
+  app.get(
+    "/barber/:id/availability",
+    barberController.getBarberAvailability.bind(barberController)
+  );
 }

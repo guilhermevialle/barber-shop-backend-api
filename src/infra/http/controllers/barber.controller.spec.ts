@@ -1,4 +1,6 @@
 import { createTestApp } from "@/../tests/create-test-app";
+import { barberTester } from "@/infra/repositories/in-memory/in-memory-barber.repository";
+import { addDays } from "date-fns";
 import request from "supertest";
 import { describe, expect, it } from "vitest";
 
@@ -39,8 +41,6 @@ describe("Barber Controller", () => {
 
     const response = await request(app.server).post("/barber").send({});
 
-    console.log(response.text);
-
     expect(response.statusCode).toBe(400);
   });
 
@@ -50,7 +50,17 @@ describe("Barber Controller", () => {
 
     const response = await request(app.server).get("/barber");
 
-    console.log(response.body);
+    expect(response.statusCode).toBe(200);
+    expect(response.body).toBeInstanceOf(Array);
+  });
+
+  // get barber availability
+  it("should return status 200 and list of available time slots", async () => {
+    const app = await createTestApp();
+
+    const response = await request(app.server).get(
+      `/barber/${barberTester.id}/availability?date=${addDays(new Date(), 1)}`
+    );
 
     expect(response.statusCode).toBe(200);
     expect(response.body).toBeInstanceOf(Array);
