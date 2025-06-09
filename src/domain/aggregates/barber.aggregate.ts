@@ -29,8 +29,11 @@ export class Barber {
   }
 
   // public methods
-  public toJSON(): BarberProps {
-    return this.props;
+  public toJSON() {
+    return {
+      ...this.props,
+      username: this.props.username.value,
+    };
   }
 
   public updateWorkday(workday: Workday) {

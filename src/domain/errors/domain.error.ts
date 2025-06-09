@@ -1,10 +1,33 @@
-export abstract class DomainError extends Error {
-  public readonly code: string;
+import { DomainErrorCode } from "./domain-error-code";
 
-  constructor(message: string, code?: string) {
+interface DomainErrorProps {
+  message: string;
+  errorCode: DomainErrorCode;
+  statusCode?: number;
+  details?: unknown;
+}
+
+export abstract class DomainError extends Error {
+  public readonly props: Required<Omit<DomainErrorProps, "statusCode">> & {
+    statusCode: number;
+  };
+
+  constructor({
+    message,
+    errorCode: code,
+    statusCode = 400,
+    details,
+  }: DomainErrorProps) {
     super(message);
     this.name = new.target.name;
-    this.code = code ?? new.target.name;
+
+    this.props = {
+      message,
+      errorCode: code,
+      statusCode,
+      details,
+    };
+
     Object.setPrototypeOf(this, new.target.prototype);
   }
 }
