@@ -70,8 +70,8 @@ describe("Barber Aggregate", () => {
     expect(json).toEqual({
       id: barberId,
       name: "John Doe",
-      username,
-      workdays,
+      username: username.value,
+      workdays: workdays.map((workday) => workday.toJSON()),
     });
   });
 

@@ -70,8 +70,6 @@ export class BarberAvailabilityService implements IBarberAvailabilityService {
         { inclusive: false }
       );
 
-    console.log(overlappingAppointments);
-
     return overlappingAppointments.length === 0;
   }
 }

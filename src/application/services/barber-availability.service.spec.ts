@@ -57,7 +57,6 @@ describe("BarberAvailability Service", () => {
       new Date()
     );
 
-    console.log({ slots });
     expect(slots).toHaveLength(4);
   });
 
@@ -109,7 +108,6 @@ describe("BarberAvailability Service", () => {
       addDays(new Date(), 1)
     );
 
-    console.log({ slots });
     expect(slots).toHaveLength(2);
   });
 });

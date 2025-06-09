@@ -23,8 +23,6 @@ describe("Appointment Controller", () => {
           .build(),
       });
 
-    console.log(response.body);
-
     expect(response.statusCode).toBe(201);
   });
 

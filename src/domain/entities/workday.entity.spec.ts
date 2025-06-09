@@ -46,4 +46,16 @@ describe("Workday Entity", () => {
     expect(restored).toBeInstanceOf(Workday);
     expect(restored.id).toBe(id);
   });
+
+  it("it should return true if some Time is available at that day", () => {
+    const workday = Workday.create(validProps);
+
+    expect(workday.isAvailableAt(new Time(10 * 60))).toBe(true);
+  });
+
+  it("it should return false if no Time is available at that day", () => {
+    const workday = Workday.create(validProps);
+
+    expect(workday.isAvailableAt(new Time(13 * 60))).toBe(false);
+  });
 });

@@ -4,6 +4,7 @@ import {
   WorkdayProps,
   workdaySchema,
 } from "../types/workday.types";
+import { Time } from "../value-objects/time.vo";
 import { WorkShift } from "./work-shift.entity";
 
 export class Workday {
@@ -65,6 +66,12 @@ export class Workday {
 
   public addShifts(shifts: WorkShift[]) {
     shifts.forEach((shift) => this.addShift(shift));
+  }
+
+  public isAvailableAt(time: Time) {
+    return this.props.shifts.some((shift) =>
+      time.isBetween(shift.startTime, shift.endTime)
+    );
   }
 
   // getters
