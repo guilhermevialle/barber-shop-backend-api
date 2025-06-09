@@ -30,3 +30,13 @@ export class DateTooLateError extends DomainError {
     });
   }
 }
+
+export class InvalidInputError extends DomainError {
+  constructor(message?: string) {
+    super({
+      message: message ?? "Invalid input",
+      errorCode: DomainErrorCode.INVALID_INPUT,
+      statusCode: 400,
+    });
+  }
+}

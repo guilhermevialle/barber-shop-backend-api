@@ -83,12 +83,12 @@ describe("Barber Aggregate", () => {
   });
 
   it("should return true for isWorking if workdays exist", () => {
-    expect(barber.isWorking()).toBe(true);
+    expect(barber.isNotWorking()).toBe(false);
   });
 
   it("should return false for isWorking if workdays is empty", () => {
     const idleBarber = Barber.create({ name: "Lazy", username, workdays: [] });
-    expect(idleBarber.isWorking()).toBe(false);
+    expect(idleBarber.isNotWorking()).toBe(true);
   });
 
   it("should add a new workday", () => {

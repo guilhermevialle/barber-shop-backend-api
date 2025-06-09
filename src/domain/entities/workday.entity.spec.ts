@@ -50,12 +50,12 @@ describe("Workday Entity", () => {
   it("it should return true if some Time is available at that day", () => {
     const workday = Workday.create(validProps);
 
-    expect(workday.isAvailableAt(new Time(10 * 60))).toBe(true);
+    expect(workday.isWorkingAt(new Time(10 * 60))).toBe(true);
   });
 
   it("it should return false if no Time is available at that day", () => {
     const workday = Workday.create(validProps);
 
-    expect(workday.isAvailableAt(new Time(13 * 60))).toBe(false);
+    expect(workday.isWorkingAt(new Time(13 * 60))).toBe(false);
   });
 });

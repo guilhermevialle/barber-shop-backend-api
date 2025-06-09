@@ -1,3 +1,4 @@
+import { InvalidInputError } from "../errors/shared-errors";
 import {
   timeDateSchema,
   TimeInput,
@@ -7,18 +8,27 @@ import {
 
 export function parseTimeInput(input: TimeInput): number {
   if (input instanceof Date) {
-    timeDateSchema.parse(input);
+    const result = timeDateSchema.safeParse(input);
+
+    if (result.error) throw new InvalidInputError(result.error.message);
+
     return input.getHours() * 60 + input.getMinutes();
   }
 
   if (typeof input === "string") {
-    timeStringSchema.parse(input);
+    const result = timeStringSchema.safeParse(input);
+
+    if (result.error) throw new InvalidInputError(result.error.message);
+
     const [hh, mm] = input.split(":").map(Number);
     return hh * 60 + mm;
   }
 
   if (typeof input === "number") {
-    timeNumberSchema.parse(input);
+    const result = timeNumberSchema.safeParse(input);
+
+    if (result.error) throw new InvalidInputError(result.error.message);
+
     return input;
   }
 
