@@ -53,7 +53,11 @@ export class WorkShift {
 
   // public methods
   public toJSON() {
-    return this.props;
+    return {
+      ...this.props,
+      startTime: this.props.startTime.formatted,
+      endTime: this.props.endTime.formatted,
+    };
   }
 
   // getters

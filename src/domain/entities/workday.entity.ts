@@ -4,6 +4,7 @@ import {
   WorkdayProps,
   workdaySchema,
 } from "../types/workday.types";
+import { WorkShift } from "./work-shift.entity";
 
 export class Workday {
   private props: Required<WorkdayProps>;
@@ -27,12 +28,43 @@ export class Workday {
     return new Workday(parsed);
   }
 
+  // private methods
+  private hasShift(id: string) {
+    return this.props.shifts.some((shift) => shift.id === id);
+  }
+
+  private findShiftIndex(id: string): number {
+    return this.props.shifts.findIndex((shift) => shift.id === id);
+  }
+
   // public methods
   public toJSON() {
     return {
       ...this.props,
       shifts: this.props.shifts.map((shift) => shift.toJSON()),
     };
+  }
+
+  public addShift(shift: WorkShift) {
+    if (this.hasShift(shift.id)) return this.updateShift(shift);
+
+    this.props.shifts.push(shift);
+  }
+
+  public updateShift(shift: WorkShift) {
+    const index = this.findShiftIndex(shift.id);
+
+    if (index !== -1) this.props.shifts[index] = shift;
+  }
+
+  public removeShift(shift: WorkShift) {
+    const index = this.findShiftIndex(shift.id);
+
+    if (index !== -1) this.props.shifts.splice(index, 1);
+  }
+
+  public addShifts(shifts: WorkShift[]) {
+    shifts.forEach((shift) => this.addShift(shift));
   }
 
   // getters
