@@ -1,8 +1,8 @@
+import { Time } from "@/domain/value-objects/time.vo";
 import { IAppointmentRepository } from "@/interfaces/repositories/appointment-repository.interface";
 import { IBarberRepository } from "@/interfaces/repositories/barber-repository.interface";
 import { IBarberAvailabilityService } from "@/interfaces/services/barber-availability-service.interface";
 import { endOfDay, getDay, startOfDay } from "date-fns";
-import { Time } from "../value-objects/time.vo";
 
 export class BarberAvailabilityService implements IBarberAvailabilityService {
   constructor(
@@ -15,7 +15,6 @@ export class BarberAvailabilityService implements IBarberAvailabilityService {
     date: Date
   ): Promise<string[]> {
     const weekday = getDay(date);
-
     const dayStart = startOfDay(date);
     const dayEnd = endOfDay(date);
 
@@ -26,37 +25,43 @@ export class BarberAvailabilityService implements IBarberAvailabilityService {
         dayEnd
       );
 
-    const workShifts = await this.barberRepo.findWorkShiftsByWeekdayAndId(
+    const shifts = await this.barberRepo.findWorkShiftsByWeekdayAndId(
       barberId,
       weekday
     );
 
     const slots: string[] = [];
-    const minimumSlotDuration = 30;
+    const minSlotDuration = 30;
 
-    for (const workShift of workShifts) {
-      let current = workShift.startTime;
-      const end = workShift.endTime;
+    for (const shift of shifts) {
+      let currentTime = shift.startTime;
+      const endTime = shift.endTime;
 
-      while (current.addMinutes(minimumSlotDuration).isLessOrEqual(end)) {
+      while (currentTime.addMinutes(minSlotDuration).isLessOrEqual(endTime)) {
         const hasAppointment = appointments.find((appointment) =>
-          Time.create(appointment.startAt).isEqual(current)
+          Time.create(appointment.startAt).isEqual(currentTime)
         );
 
         if (hasAppointment) {
-          current = current.addMinutes(hasAppointment.durationInMinutes);
+          currentTime = currentTime.addMinutes(
+            hasAppointment.durationInMinutes
+          );
           continue;
         }
 
-        slots.push(current.toString());
-        current = current.addMinutes(30);
+        slots.push(currentTime.toString());
+        currentTime = currentTime.addMinutes(30);
       }
     }
 
     return slots;
   }
 
-  async isAvailableInRange(barberId: string, startAt: Date, endAt: Date) {
+  async isAvailableInDateRange(
+    barberId: string,
+    startAt: Date,
+    endAt: Date
+  ): Promise<boolean> {
     const overlappingAppointments =
       await this.appointmentRepo.findOverlappingAppointmentsByBarberInRange(
         barberId,

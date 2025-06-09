@@ -1,6 +1,6 @@
+import { BarberAvailabilityService } from "./application/services/barber-availability.service";
 import { Barber } from "./domain/aggregates/barber.aggregate";
 import { WorkdayFactory } from "./domain/helpers/workday-factory";
-import { BarberAvailabilityService } from "./domain/services/barber-availability.service";
 import { idGeneratorService } from "./domain/services/id-generator.service";
 import { Username } from "./domain/value-objects/username.vo";
 import { InMemoryAppointmentRepository } from "./infra/repositories/in-memory/in-memory-appointment.repository";

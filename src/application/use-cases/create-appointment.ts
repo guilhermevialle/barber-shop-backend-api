@@ -1,3 +1,10 @@
+import { CreateAppointmentDto } from "@/application/dtos/create-appointment.dto";
+import { BarberNotAvailableError } from "@/application/errors/barber-errors";
+import {
+  BarberNotFoundError,
+  CustomerNotFoundError,
+  ServiceNotFoundError,
+} from "@/application/errors/service-errors";
 import { Appointment } from "@/domain/entities/appointment.entity";
 import { IAppointmentRepository } from "@/interfaces/repositories/appointment-repository.interface";
 import { IBarberRepository } from "@/interfaces/repositories/barber-repository.interface";
@@ -5,13 +12,6 @@ import { ICustomerRepository } from "@/interfaces/repositories/customer-reposito
 import { IServiceRepository } from "@/interfaces/repositories/service-repository.interface";
 import { IBarberAvailabilityService } from "@/interfaces/services/barber-availability-service.interface";
 import { addMinutes } from "date-fns";
-import { CreateAppointmentDto } from "../dtos/create-appointment.dto";
-import { BarberNotAvailableError } from "../errors/barber-errors";
-import {
-  BarberNotFoundError,
-  CustomerNotFoundError,
-  ServiceNotFoundError,
-} from "../errors/service-errors";
 
 type Request = CreateAppointmentDto;
 

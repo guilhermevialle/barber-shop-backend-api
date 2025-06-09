@@ -3,7 +3,7 @@ export interface IBarberAvailabilityService {
     barberId: string,
     date: Date
   ) => Promise<string[]>;
-  isAvailableInRange: (
+  isAvailableInDateRange: (
     barberId: string,
     startAt: Date,
     endAt: Date

@@ -1,3 +1,5 @@
+import { CreateBarberDto } from "@/application/dtos/create-barber.dto";
+import { BarberAlreadyExistsError } from "@/application/errors/barber-errors";
 import { Barber } from "@/domain/aggregates/barber.aggregate";
 import { WorkShift } from "@/domain/entities/work-shift.entity";
 import { Workday } from "@/domain/entities/workday.entity";
@@ -5,8 +7,6 @@ import { idGeneratorService } from "@/domain/services/id-generator.service";
 import { Time } from "@/domain/value-objects/time.vo";
 import { Username } from "@/domain/value-objects/username.vo";
 import { IBarberRepository } from "@/interfaces/repositories/barber-repository.interface";
-import { CreateBarberDto } from "../dtos/create-barber.dto";
-import { BarberAlreadyExistsError } from "../errors/barber-errors";
 
 type Request = CreateBarberDto;
 

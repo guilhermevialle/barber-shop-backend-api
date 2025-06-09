@@ -1,3 +1,9 @@
+import { Barber } from "@/domain/aggregates/barber.aggregate";
+import { Appointment } from "@/domain/entities/appointment.entity";
+import { DateFactory } from "@/domain/helpers/date-factory";
+import { WorkdayFactory } from "@/domain/helpers/workday-factory";
+import { idGeneratorService } from "@/domain/services/id-generator.service";
+import { Username } from "@/domain/value-objects/username.vo";
 import { InMemoryAppointmentRepository } from "@/infra/repositories/in-memory/in-memory-appointment.repository";
 import { InMemoryBarberRepository } from "@/infra/repositories/in-memory/in-memory-barber.repository";
 import { IAppointmentRepository } from "@/interfaces/repositories/appointment-repository.interface";
@@ -5,13 +11,7 @@ import { IBarberRepository } from "@/interfaces/repositories/barber-repository.i
 import { IBarberAvailabilityService } from "@/interfaces/services/barber-availability-service.interface";
 import { addDays } from "date-fns";
 import { beforeEach, describe, expect, it } from "vitest";
-import { Barber } from "../aggregates/barber.aggregate";
-import { Appointment } from "../entities/appointment.entity";
-import { DateFactory } from "../helpers/date-factory";
-import { WorkdayFactory } from "../helpers/workday-factory";
-import { Username } from "../value-objects/username.vo";
 import { BarberAvailabilityService } from "./barber-availability.service";
-import { idGeneratorService } from "./id-generator.service";
 
 describe("BarberAvailability Service", () => {
   let barber: Barber;
@@ -58,7 +58,7 @@ describe("BarberAvailability Service", () => {
     );
 
     console.log({ slots });
-    expect(slots).toHaveLength(4); // 08:00, 08:30, 09:00, 09:30
+    expect(slots).toHaveLength(4);
   });
 
   it("should skip time slots that overlap with existing appointments", async () => {
@@ -111,6 +111,5 @@ describe("BarberAvailability Service", () => {
 
     console.log({ slots });
     expect(slots).toHaveLength(2);
-    // 08:00, 08:30, 09:00
   });
 });

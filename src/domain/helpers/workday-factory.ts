@@ -3,21 +3,19 @@ import { Time } from "@/domain/value-objects/time.vo";
 import { IIdGeneratorService } from "@/interfaces/services/id-generator-service.interface";
 import { WorkShift } from "../entities/work-shift.entity";
 
-type RawShift = {
-  startTime: string;
-  endTime: string;
-};
-
-type Params = {
+interface Props {
   barberId: string;
-  between: [number, number]; // exemplo: [1, 5]
-  shifts: RawShift[];
-};
+  between: [number, number];
+  shifts: Array<{
+    startTime: string;
+    endTime: string;
+  }>;
+}
 
 export class WorkdayFactory {
   constructor(private readonly idGenerator: IIdGeneratorService) {}
 
-  createMany({ barberId, between, shifts }: Params): Workday[] {
+  createMany({ barberId, between, shifts }: Props): Workday[] {
     const [startWeekday, endWeekday] = between;
 
     const weekdays = Array.from(
