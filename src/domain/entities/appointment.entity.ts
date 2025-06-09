@@ -45,13 +45,9 @@ export class Appointment {
     return this.props.startAt > startAt && this.props.startAt < endAt;
   }
 
-  public isBetweenTimeRange(
-    time1: Time,
-    time2: Time,
-    inclusive: boolean = true
-  ) {
+  public isBetweenTimeRange(start: Time, end: Time, inclusive: boolean = true) {
     const time = Time.create(this.props.startAt);
-    return time.isBetween(time1, time2, inclusive);
+    return time.isBetween(start, end, inclusive);
   }
 
   public conflictsWith(other: Appointment, inclusive: boolean = false) {

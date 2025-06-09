@@ -26,20 +26,20 @@ export class Time {
   }
 
   // public methods
-  public isAfter(time: Time, inclusive: boolean = true): boolean {
-    if (inclusive) return this._minutes >= time._minutes;
+  public isAfter(other: Time, inclusive: boolean = true): boolean {
+    if (inclusive) return this._minutes >= other._minutes;
 
-    return this._minutes > time._minutes;
+    return this._minutes > other._minutes;
   }
 
-  public isBefore(time: Time, inclusive: boolean = true): boolean {
-    if (inclusive) return this._minutes <= time._minutes;
+  public isBefore(other: Time, inclusive: boolean = true): boolean {
+    if (inclusive) return this._minutes <= other._minutes;
 
-    return this._minutes < time._minutes;
+    return this._minutes < other._minutes;
   }
 
-  public isEqual(time: Time): boolean {
-    return this._minutes === time._minutes;
+  public isEqual(other: Time): boolean {
+    return this._minutes === other._minutes;
   }
 
   public isBetween(start: Time, end: Time, inclusive: boolean = true): boolean {
@@ -62,12 +62,12 @@ export class Time {
     return referenceDate;
   }
 
-  public isLessOrEqual(time: Time): boolean {
-    return this._minutes <= time._minutes;
+  public isLessOrEqual(other: Time): boolean {
+    return this._minutes <= other._minutes;
   }
 
-  public isGreaterOrEqual(time: Time): boolean {
-    return this._minutes >= time._minutes;
+  public isGreaterOrEqual(other: Time): boolean {
+    return this._minutes >= other._minutes;
   }
 
   public addMinutes(minutes: number): Time {
