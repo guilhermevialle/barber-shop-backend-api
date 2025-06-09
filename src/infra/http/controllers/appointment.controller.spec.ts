@@ -10,16 +10,13 @@ describe("Appointment Controller", () => {
   // create
   it("should create valid appointment and return status 201", async () => {
     const app = await createTestApp();
-    const customer = customerTester;
-    const barber = barberTester;
-    const service = serviceTester;
 
     const response = await request(app.server)
       .post("/appointment")
       .send({
-        barberId: barber.id,
-        customerId: customer.id,
-        serviceId: service.id,
+        barberId: barberTester.id,
+        customerId: customerTester.id,
+        serviceId: serviceTester.id,
         startAt: DateFactory.hour(8)
           .minute(30)
           .day(new Date().getDate() + 1)
@@ -33,16 +30,13 @@ describe("Appointment Controller", () => {
 
   it("should return status 409 if has conflicting appointment", async () => {
     const app = await createTestApp();
-    const customer = customerTester;
-    const barber = barberTester;
-    const service = serviceTester;
 
     await request(app.server)
       .post("/appointment")
       .send({
-        barberId: barber.id,
-        customerId: customer.id,
-        serviceId: service.id,
+        barberId: barberTester.id,
+        customerId: customerTester.id,
+        serviceId: serviceTester.id,
         startAt: DateFactory.hour(8)
           .minute(30)
           .day(new Date().getDate() + 1)
@@ -52,9 +46,9 @@ describe("Appointment Controller", () => {
     const response = await request(app.server)
       .post("/appointment")
       .send({
-        barberId: barber.id,
-        customerId: customer.id,
-        serviceId: service.id,
+        barberId: barberTester.id,
+        customerId: customerTester.id,
+        serviceId: serviceTester.id,
         startAt: DateFactory.hour(8)
           .minute(30)
           .day(new Date().getDate() + 1)

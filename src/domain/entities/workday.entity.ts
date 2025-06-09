@@ -29,7 +29,10 @@ export class Workday {
 
   // public methods
   public toJSON() {
-    return this.props;
+    return {
+      ...this.props,
+      shifts: this.props.shifts.map((shift) => shift.toJSON()),
+    };
   }
 
   // getters

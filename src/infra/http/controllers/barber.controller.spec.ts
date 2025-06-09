@@ -43,4 +43,16 @@ describe("Barber Controller", () => {
 
     expect(response.statusCode).toBe(400);
   });
+
+  // get barber list
+  it("should return status 200 and list of barbers", async () => {
+    const app = await createTestApp();
+
+    const response = await request(app.server).get("/barber");
+
+    console.log(response.body);
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body).toBeInstanceOf(Array);
+  });
 });

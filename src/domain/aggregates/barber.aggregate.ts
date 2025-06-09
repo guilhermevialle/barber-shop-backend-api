@@ -33,6 +33,7 @@ export class Barber {
     return {
       ...this.props,
       username: this.props.username.value,
+      workdays: this.props.workdays.map((workday) => workday.toJSON()),
     };
   }
 
