@@ -5,7 +5,7 @@ export const createAppointmentDtoSchema = z.object({
   barberId: idSchema("barber"),
   customerId: idSchema("customer"),
   serviceId: idSchema("service"),
-  startAt: z.date(),
+  startAt: z.coerce.date(),
 });
 
 export type CreateAppointmentDto = z.infer<typeof createAppointmentDtoSchema>;

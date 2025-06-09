@@ -1,10 +1,36 @@
 import { Barber } from "@/domain/aggregates/barber.aggregate";
 import { WorkShift } from "@/domain/entities/work-shift.entity";
 import { Workday } from "@/domain/entities/workday.entity";
+import { WorkdayFactory } from "@/domain/helpers/workday-factory";
+import { idGeneratorService } from "@/domain/services/id-generator.service";
+import { Username } from "@/domain/value-objects/username.vo";
 import { IBarberRepository } from "@/interfaces/repositories/barber-repository.interface";
 
+export const barberTester = Barber.create({
+  name: "Barber for Tests",
+  username: Username.create("barber_for_tests"),
+  workdays: [],
+});
+
+barberTester.addWorkdays(
+  new WorkdayFactory(idGeneratorService).createMany({
+    barberId: barberTester.id,
+    between: [0, 6],
+    shifts: [
+      {
+        startTime: "08:00",
+        endTime: "12:00",
+      },
+      {
+        startTime: "13:00",
+        endTime: "17:30",
+      },
+    ],
+  })
+);
+
 export class InMemoryBarberRepository implements IBarberRepository {
-  private storage: Barber[] = [];
+  private storage: Barber[] = [barberTester];
 
   async findWorkdaysById(id: string): Promise<Workday[]> {
     const barber = this.storage.find((barber) => barber.id === id);

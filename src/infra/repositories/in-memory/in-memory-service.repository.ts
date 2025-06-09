@@ -1,8 +1,15 @@
 import { Service } from "@/domain/entities/service.entity";
 import { IServiceRepository } from "@/interfaces/repositories/service-repository.interface";
+import { toCents } from "@/utils/to-cents";
+
+export const serviceTester = Service.create({
+  type: "Undercut",
+  priceInCents: toCents(30),
+  durationInMinutes: 30,
+});
 
 export class InMemoryServiceRepository implements IServiceRepository {
-  private storage: Service[] = [];
+  private storage: Service[] = [serviceTester];
 
   async findAll(): Promise<Service[]> {
     return this.storage;

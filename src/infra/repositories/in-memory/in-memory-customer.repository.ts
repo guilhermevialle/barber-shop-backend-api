@@ -1,8 +1,14 @@
 import { Customer } from "@/domain/entities/customer.entity";
+import { Username } from "@/domain/value-objects/username.vo";
 import { ICustomerRepository } from "@/interfaces/repositories/customer-repository.interface";
 
+export const customerTester = Customer.create({
+  name: "Customer for Tests",
+  username: Username.create("customer_for_tests"),
+});
+
 export class InMemoryCustomerRepository implements ICustomerRepository {
-  private storage: Customer[] = [];
+  private storage: Customer[] = [customerTester];
 
   async findById(id: string): Promise<Customer | null> {
     const customer = this.storage.find((customer) => customer.id === id);

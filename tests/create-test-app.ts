@@ -1,6 +1,7 @@
 import { ApplicationError } from "@/application/errors/application.error";
 import { DomainError } from "@/domain/errors/domain.error";
 import { HttpError } from "@/infra/http/errors/http.error";
+import { appointmentRoutes } from "@/infra/http/routes/appointment.routes";
 import { barberRoutes } from "@/infra/http/routes/barber.routes";
 import { customerRoutes } from "@/infra/http/routes/customer.routes";
 import { errorHandlerPlugin } from "@/main/plugins/error-handler";
@@ -33,6 +34,7 @@ export async function createTestApp() {
   await app.register(errorHandlerPlugin);
   await app.register(barberRoutes);
   await app.register(customerRoutes);
+  await app.register(appointmentRoutes);
   await app.ready();
 
   return app;
