@@ -1,7 +1,7 @@
 import { createBarberDtoSchema } from "@/application/dtos/create-barber.dto";
 import { CreateBarber } from "@/application/use-cases/create-barber";
 import { FastifyReply, FastifyRequest } from "fastify";
-import { BadRequestError } from "../errors/http.error";
+import { BadRequestError } from "../errors/shared-errors";
 
 export class BarberController {
   constructor(private readonly createBarber: CreateBarber) {}

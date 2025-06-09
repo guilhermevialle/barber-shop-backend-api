@@ -20,3 +20,13 @@ export class BarberNotAvailableError extends ApplicationError {
     });
   }
 }
+
+export class BarberNotFoundError extends ApplicationError {
+  constructor(message?: string) {
+    super({
+      message: message ?? "Barber not found",
+      errorCode: ApplicationErrorCode.BARBER_NOT_FOUND,
+      statusCode: 404,
+    });
+  }
+}

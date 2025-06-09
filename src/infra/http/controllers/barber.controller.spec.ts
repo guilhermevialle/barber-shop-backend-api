@@ -12,8 +12,17 @@ describe("Barber Controller", () => {
       workdays: [],
     });
 
-    console.log(response.body);
     expect(response.statusCode).toBe(201);
+  });
+
+  it("should return 400 if request body is invalid", async () => {
+    const app = await createTestApp();
+
+    const response = await request(app.server).post("/barber").send({});
+
+    console.log(response.text);
+
+    expect(response.statusCode).toBe(400);
   });
 
   it("should throw if username already exists", async () => {
@@ -25,12 +34,12 @@ describe("Barber Controller", () => {
       workdays: [],
     });
 
-    await expect(() =>
-      request(app.server).post("/barber").send({
-        name: "John Doe",
-        username: "johndoe",
-        workdays: [],
-      })
-    ).rejects.toThrow();
+    const conflictingRequest = await request(app.server).post("/barber").send({
+      name: "John Doe",
+      username: "johndoe",
+      workdays: [],
+    });
+
+    expect(conflictingRequest.statusCode).toBe(409);
   });
 });

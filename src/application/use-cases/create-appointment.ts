@@ -1,10 +1,9 @@
 import { CreateAppointmentDto } from "@/application/dtos/create-appointment.dto";
-import { BarberNotAvailableError } from "@/application/errors/barber-errors";
 import {
+  BarberNotAvailableError,
   BarberNotFoundError,
-  CustomerNotFoundError,
-  ServiceNotFoundError,
-} from "@/application/errors/service-errors";
+} from "@/application/errors/barber-errors";
+import { ServiceNotFoundError } from "@/application/errors/service-errors";
 import { Appointment } from "@/domain/entities/appointment.entity";
 import { IAppointmentRepository } from "@/interfaces/repositories/appointment-repository.interface";
 import { IBarberRepository } from "@/interfaces/repositories/barber-repository.interface";
@@ -12,6 +11,7 @@ import { ICustomerRepository } from "@/interfaces/repositories/customer-reposito
 import { IServiceRepository } from "@/interfaces/repositories/service-repository.interface";
 import { IBarberAvailabilityService } from "@/interfaces/services/barber-availability-service.interface";
 import { addMinutes } from "date-fns";
+import { CustomerNotFoundError } from "../errors/customer-errors";
 
 type Request = CreateAppointmentDto;
 
@@ -47,7 +47,7 @@ export class CreateAppointment {
       throw new CustomerNotFoundError(`Customer ${customerId} not found`);
 
     const barberIsAvailable =
-      await this.barberAvailabilityService.isAvailableInRange(
+      await this.barberAvailabilityService.isAvailableInDateRange(
         barberId,
         startAt,
         addMinutes(startAt, service.durationInMinutes)
