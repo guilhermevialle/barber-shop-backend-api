@@ -1,9 +1,10 @@
+import { createTestApp } from "@/../tests/create-test-app";
 import request from "supertest";
 import { describe, expect, it } from "vitest";
-import { createTestApp } from "../../../../tests/create-test-app";
 
 describe("Barber Controller", () => {
-  it("should create valid barber", async () => {
+  // create barber
+  it("should create valid barber and return status 201", async () => {
     const app = await createTestApp();
 
     const response = await request(app.server).post("/barber").send({
@@ -15,17 +16,7 @@ describe("Barber Controller", () => {
     expect(response.statusCode).toBe(201);
   });
 
-  it("should return 400 if request body is invalid", async () => {
-    const app = await createTestApp();
-
-    const response = await request(app.server).post("/barber").send({});
-
-    console.log(response.text);
-
-    expect(response.statusCode).toBe(400);
-  });
-
-  it("should throw if username already exists", async () => {
+  it("should return status 409 if barber already exists", async () => {
     const app = await createTestApp();
 
     await request(app.server).post("/barber").send({
@@ -35,11 +26,21 @@ describe("Barber Controller", () => {
     });
 
     const conflictingRequest = await request(app.server).post("/barber").send({
-      name: "John Doe",
+      name: "John Doe 2",
       username: "johndoe",
       workdays: [],
     });
 
     expect(conflictingRequest.statusCode).toBe(409);
+  });
+
+  it("should return status 400 if request body is invalid", async () => {
+    const app = await createTestApp();
+
+    const response = await request(app.server).post("/barber").send({});
+
+    console.log(response.text);
+
+    expect(response.statusCode).toBe(400);
   });
 });

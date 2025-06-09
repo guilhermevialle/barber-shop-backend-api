@@ -2,6 +2,7 @@ import { ApplicationError } from "@/application/errors/application.error";
 import { DomainError } from "@/domain/errors/domain.error";
 import { HttpError } from "@/infra/http/errors/http.error";
 import { barberRoutes } from "@/infra/http/routes/barber.routes";
+import { customerRoutes } from "@/infra/http/routes/customer.routes";
 import { errorHandlerPlugin } from "@/main/plugins/error-handler";
 import fastify from "fastify";
 
@@ -31,6 +32,7 @@ export async function createTestApp() {
 
   await app.register(errorHandlerPlugin);
   await app.register(barberRoutes);
+  await app.register(customerRoutes);
   await app.ready();
 
   return app;

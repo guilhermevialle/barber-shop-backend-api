@@ -29,7 +29,10 @@ export class Customer {
 
   // public methods
   public toJSON() {
-    return this.props;
+    return {
+      ...this.props,
+      username: this.props.username.value,
+    };
   }
 
   // getters
