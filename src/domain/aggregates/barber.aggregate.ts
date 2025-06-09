@@ -1,4 +1,5 @@
 import { Workday } from "../entities/workday.entity";
+import { MismatchBarberError } from "../errors/barber-errors";
 import { idGeneratorService } from "../services/id-generator.service";
 import {
   BarberProps,
@@ -28,6 +29,21 @@ export class Barber {
     return new Barber(parsed);
   }
 
+  // private methods
+  private hasWorkday(weekday: number): boolean {
+    return this.props.workdays.some((workday) => workday.weekday === weekday);
+  }
+
+  private findWorkdayIndex(weekday: number): number {
+    return this.props.workdays.findIndex(
+      (workday) => workday.weekday === weekday
+    );
+  }
+
+  private isBarberIdMatch(id: string): boolean {
+    return this.id == id;
+  }
+
   // public methods
   public toJSON() {
     return {
@@ -38,13 +54,14 @@ export class Barber {
   }
 
   public updateWorkday(workday: Workday) {
-    const index = this.props.workdays.findIndex(
-      (w) => w.weekday === workday.weekday
-    );
+    if (!this.isBarberIdMatch(workday.barberId))
+      throw new MismatchBarberError(
+        `[Update]: Workday does not belong to this barber.`
+      );
 
-    if (index === -1) return;
+    const index = this.findWorkdayIndex(workday.weekday);
 
-    this.props.workdays[index] = workday;
+    if (index !== -1) this.props.workdays[index] = workday;
   }
 
   public addWorkdays(workdays: Workday[]) {
@@ -52,12 +69,29 @@ export class Barber {
   }
 
   public addWorkday(workday: Workday) {
-    this.updateWorkday(workday);
+    if (!this.isBarberIdMatch(workday.barberId))
+      throw new MismatchBarberError(
+        `[Add]: Workday does not belong to this barber.`
+      );
+
+    if (this.hasWorkday(workday.weekday)) return this.updateWorkday(workday);
+
     this.props.workdays.push(workday);
   }
 
-  public isWorking() {
-    return this.props.workdays.length > 0;
+  public removeWorkday(workday: Workday) {
+    if (!this.isBarberIdMatch(workday.barberId))
+      throw new MismatchBarberError(
+        `[Remove]: Workday does not belong to this barber.`
+      );
+
+    const index = this.findWorkdayIndex(workday.weekday);
+
+    if (index !== -1) this.props.workdays.splice(index, 1);
+  }
+
+  public isNotWorking() {
+    return this.props.workdays.length === 0;
   }
 
   // getters

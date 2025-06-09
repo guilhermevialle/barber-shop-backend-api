@@ -5,6 +5,7 @@ import {
   WorkShiftProps,
   workShiftSchema,
 } from "../types/work-shift.types";
+import { Time } from "../value-objects/time.vo";
 
 export class WorkShift {
   private props: Required<WorkShiftProps>;
@@ -58,6 +59,10 @@ export class WorkShift {
       startTime: this.props.startTime.formatted,
       endTime: this.props.endTime.formatted,
     };
+  }
+
+  public isTimeBetween(time: Time) {
+    return time.isBetween(this.props.startTime, this.props.endTime);
   }
 
   // getters

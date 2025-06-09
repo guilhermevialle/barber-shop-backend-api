@@ -10,3 +10,13 @@ export class InvalidWorkdayError extends DomainError {
     });
   }
 }
+
+export class MismatchBarberError extends DomainError {
+  constructor(message?: string) {
+    super({
+      message: message ?? "Mismatch barber",
+      errorCode: DomainErrorCode.MISMATCH_BARBER,
+      statusCode: 400,
+    });
+  }
+}

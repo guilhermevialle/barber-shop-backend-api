@@ -1,3 +1,4 @@
+import { MismatchWorkdayError } from "../errors/workday-errors";
 import { idGeneratorService } from "../services/id-generator.service";
 import {
   RequiredWorkdayProps,
@@ -38,6 +39,10 @@ export class Workday {
     return this.props.shifts.findIndex((shift) => shift.id === id);
   }
 
+  private isWorkdayIdMatch(id: string): boolean {
+    return this.id == id;
+  }
+
   // public methods
   public toJSON() {
     return {
@@ -47,18 +52,33 @@ export class Workday {
   }
 
   public addShift(shift: WorkShift) {
+    if (!this.isWorkdayIdMatch(shift.workdayId))
+      throw new MismatchWorkdayError(
+        `[Add]: Shift does not belong to this workday.`
+      );
+
     if (this.hasShift(shift.id)) return this.updateShift(shift);
 
     this.props.shifts.push(shift);
   }
 
   public updateShift(shift: WorkShift) {
+    if (!this.isWorkdayIdMatch(shift.workdayId))
+      throw new MismatchWorkdayError(
+        `[Update]: Shift does not belong to this workday.`
+      );
+
     const index = this.findShiftIndex(shift.id);
 
     if (index !== -1) this.props.shifts[index] = shift;
   }
 
   public removeShift(shift: WorkShift) {
+    if (!this.isWorkdayIdMatch(shift.workdayId))
+      throw new MismatchWorkdayError(
+        `[Remove]: Shift does not belong to this workday.`
+      );
+
     const index = this.findShiftIndex(shift.id);
 
     if (index !== -1) this.props.shifts.splice(index, 1);
@@ -68,7 +88,7 @@ export class Workday {
     shifts.forEach((shift) => this.addShift(shift));
   }
 
-  public isAvailableAt(time: Time) {
+  public isWorkingAt(time: Time) {
     return this.props.shifts.some((shift) =>
       time.isBetween(shift.startTime, shift.endTime)
     );
