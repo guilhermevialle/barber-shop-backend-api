@@ -12,6 +12,7 @@ describe("Barber Controller", () => {
     const response = await request(app.server).post("/barber").send({
       name: "John Doe",
       username: "johndoe",
+      password: "password123",
       workdays: [],
     });
 
@@ -24,12 +25,14 @@ describe("Barber Controller", () => {
     await request(app.server).post("/barber").send({
       name: "John Doe",
       username: "johndoe",
+      password: "password123",
       workdays: [],
     });
 
     const conflictingRequest = await request(app.server).post("/barber").send({
       name: "John Doe 2",
       username: "johndoe",
+      password: "password123",
       workdays: [],
     });
 

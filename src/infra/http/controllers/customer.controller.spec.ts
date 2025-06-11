@@ -10,6 +10,7 @@ describe("Customer Controller", () => {
     const response = await request(app.server).post("/customer").send({
       name: "John Doe",
       username: "johndoe",
+      password: "password123",
     });
 
     expect(response.statusCode).toBe(201);
@@ -21,6 +22,7 @@ describe("Customer Controller", () => {
     await request(app.server).post("/customer").send({
       name: "John Doe",
       username: "johndoe",
+      password: "password123",
     });
 
     const conflictingRequest = await request(app.server)
@@ -28,6 +30,7 @@ describe("Customer Controller", () => {
       .send({
         name: "John Doe 2",
         username: "johndoe",
+        password: "password123",
       });
 
     expect(conflictingRequest.statusCode).toBe(409);

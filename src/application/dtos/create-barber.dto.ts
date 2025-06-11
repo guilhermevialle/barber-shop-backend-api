@@ -1,9 +1,11 @@
+import { passwordSchema } from "@/domain/types/value-object-types/password.types";
 import { usernameSchema } from "@/domain/types/value-object-types/username.types";
 import { z } from "zod";
 
 export const createBarberDtoSchema = z.object({
   name: z.string(),
   username: usernameSchema,
+  password: passwordSchema,
   workdays: z
     .array(
       z.object({
