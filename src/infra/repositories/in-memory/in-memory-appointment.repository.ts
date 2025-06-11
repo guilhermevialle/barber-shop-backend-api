@@ -1,11 +1,11 @@
 import { Appointment } from "@/domain/entities/appointment.entity";
 import { IAppointmentRepository } from "@/interfaces/repositories/appointment-repository.interface";
-import { addDays, areIntervalsOverlapping } from "date-fns";
+import { areIntervalsOverlapping } from "date-fns";
 
 export class InMemoryAppointmentRepository implements IAppointmentRepository {
   private storage: Appointment[] = [];
 
-  async findOverlappingAppointmentsByBarberInRange(
+  async findOverlappingAppointmentsByBarber(
     barberId: string,
     start: Date,
     end: Date,
@@ -21,30 +21,6 @@ export class InMemoryAppointmentRepository implements IAppointmentRepository {
         )
       );
     });
-  }
-
-  async findOverlappingAppointmentByBarber(
-    barberId: string,
-    startAt: Date,
-    options: {
-      ignoreId?: string;
-      inclusive?: boolean;
-    } = {
-      inclusive: true,
-    }
-  ): Promise<Appointment | null> {
-    const appointment = this.storage.find(
-      (appointment) =>
-        appointment.barberId === barberId &&
-        appointment.id !== options.ignoreId &&
-        areIntervalsOverlapping(
-          { start: startAt, end: addDays(startAt, 30) },
-          { start: appointment.startAt, end: appointment.endAt },
-          { inclusive: options.inclusive }
-        )
-    );
-
-    return appointment ?? null;
   }
 
   async clear(): Promise<void> {

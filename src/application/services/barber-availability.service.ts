@@ -1,3 +1,4 @@
+import { MIN_SLOT_DURATION } from "@/domain/types/service.types";
 import { Time } from "@/domain/value-objects/time.vo";
 import { IAppointmentRepository } from "@/interfaces/repositories/appointment-repository.interface";
 import { IBarberRepository } from "@/interfaces/repositories/barber-repository.interface";
@@ -10,6 +11,14 @@ export class BarberAvailabilityService implements IBarberAvailabilityService {
     private readonly appointmentRepo: IAppointmentRepository
   ) {}
 
+  async isAvailableByWeekday(
+    barberId: string,
+    weekday: number
+  ): Promise<boolean> {
+    const shifts = await this.barberRepo.findShiftsByWeekday(barberId, weekday);
+    return shifts.length > 0;
+  }
+
   async getAvailableTimeSlotsByDate(
     barberId: string,
     date: Date
@@ -18,41 +27,43 @@ export class BarberAvailabilityService implements IBarberAvailabilityService {
     const dayStart = startOfDay(date);
     const dayEnd = endOfDay(date);
 
-    const appointments =
-      await this.appointmentRepo.findOverlappingAppointmentsByBarberInRange(
+    const [appointments, shifts] = await Promise.all([
+      this.appointmentRepo.findOverlappingAppointmentsByBarber(
         barberId,
         dayStart,
         dayEnd
-      );
+      ),
+      this.barberRepo.findShiftsByWeekday(barberId, weekday),
+    ]);
 
-    const shifts = await this.barberRepo.findWorkShiftsByWeekdayAndId(
-      barberId,
-      weekday
-    );
+    const slots = shifts.flatMap((shift) => {
+      const timeSlots: string[] = [];
 
-    const slots: string[] = [];
-    const minSlotDuration = 30;
-
-    for (const shift of shifts) {
-      let currentTime = shift.startTime;
-      const endTime = shift.endTime;
-
-      while (currentTime.addMinutes(minSlotDuration).isLessOrEqual(endTime)) {
-        const hasAppointment = appointments.find((appointment) =>
-          Time.create(appointment.startAt).isEqual(currentTime)
+      for (
+        let time = shift.startTime;
+        time.addMinutes(MIN_SLOT_DURATION).isLessOrEqual(shift.endTime);
+        time = time.addMinutes(30)
+      ) {
+        const conflict = appointments.some((appointment) =>
+          Time.create(appointment.startAt).isEqual(time)
         );
 
-        if (hasAppointment) {
-          currentTime = currentTime.addMinutes(
-            hasAppointment.durationInMinutes
+        if (!conflict) {
+          timeSlots.push(time.toString());
+        } else {
+          const conflictingAppointment = appointments.find((appointment) =>
+            Time.create(appointment.startAt).isEqual(time)
           );
-          continue;
+          if (conflictingAppointment) {
+            time = time.addMinutes(
+              conflictingAppointment.durationInMinutes - 30
+            );
+          }
         }
-
-        slots.push(currentTime.toString());
-        currentTime = currentTime.addMinutes(30);
       }
-    }
+
+      return timeSlots;
+    });
 
     return slots;
   }
@@ -63,7 +74,7 @@ export class BarberAvailabilityService implements IBarberAvailabilityService {
     endAt: Date
   ): Promise<boolean> {
     const overlappingAppointments =
-      await this.appointmentRepo.findOverlappingAppointmentsByBarberInRange(
+      await this.appointmentRepo.findOverlappingAppointmentsByBarber(
         barberId,
         startAt,
         endAt,

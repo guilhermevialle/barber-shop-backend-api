@@ -6,6 +6,15 @@ import { ListBarbers } from "@/application/use-cases/list-barbers";
 import { FastifyReply, FastifyRequest } from "fastify";
 import { BadRequestError } from "../errors/shared-errors";
 
+type CustomRequest = FastifyRequest & {
+  params: {
+    id: string;
+  };
+  query: {
+    date: string;
+  };
+};
+
 export class BarberController {
   constructor(
     private readonly createBarber: CreateBarber,
@@ -50,12 +59,3 @@ export class BarberController {
     return reply.status(200).send(availableTimeSlots);
   }
 }
-
-type CustomRequest = FastifyRequest & {
-  params: {
-    id: string;
-  };
-  query: {
-    date: string;
-  };
-};

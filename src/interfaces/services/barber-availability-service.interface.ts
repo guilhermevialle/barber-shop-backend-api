@@ -8,4 +8,5 @@ export interface IBarberAvailabilityService {
     startAt: Date,
     endAt: Date
   ) => Promise<boolean>;
+  isAvailableByWeekday: (barberId: string, weekday: number) => Promise<boolean>;
 }

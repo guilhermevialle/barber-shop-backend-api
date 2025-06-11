@@ -5,6 +5,9 @@ export const partialServiceSchema = z.object({
   id: idSchema().optional(),
 });
 
+export const MIN_SLOT_DURATION = 30;
+export const MAX_SLOT_DURATION = 90;
+
 export const requiredServiceSchema = z.object({
   type: z
     .string({
@@ -24,8 +27,8 @@ export const requiredServiceSchema = z.object({
       required_error: "Duration is required",
       invalid_type_error: "Duration must be a number",
     })
-    .min(30)
-    .max(90)
+    .min(MIN_SLOT_DURATION)
+    .max(MAX_SLOT_DURATION)
     .refine((value) => value % 30 === 0, "Duration must be a multiple of 30"),
 });
 
