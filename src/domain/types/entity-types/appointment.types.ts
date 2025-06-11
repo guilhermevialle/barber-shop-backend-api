@@ -1,7 +1,9 @@
-import { idSchema } from "@/domain/utils/id-schema";
+import { idSchema } from "@/domain/types/shared-types/id.types";
 import { Time } from "@/domain/value-objects/time.vo";
 import { differenceInDays, isPast } from "date-fns";
 import { z } from "zod";
+import { durationInMinutesSchema } from "../shared-types/duration.types";
+import { priceInCentsSchema } from "../shared-types/price.types";
 
 export const partialAppointmentSchema = z.object({
   id: idSchema().optional(),
@@ -25,22 +27,8 @@ export const requiredAppointmentSchema = z.object({
     .refine((date) => Time.create(date).isDivisibleBy(15), {
       message: "Start time must be a multiple of 15 minutes",
     }),
-  priceInCents: z
-    .number({
-      required_error: "Price is required",
-      invalid_type_error: "Price must be a number",
-    })
-    .int()
-    .min(100),
-  durationInMinutes: z
-    .number({
-      required_error: "Duration is required",
-      invalid_type_error: "Duration must be a number",
-    })
-    .int()
-    .min(30)
-    .max(90)
-    .refine((value) => value % 15 === 0, "Duration must be a multiple of 15"),
+  priceInCents: priceInCentsSchema,
+  durationInMinutes: durationInMinutesSchema,
 });
 
 export type PartialAppointmentProps = z.infer<typeof partialAppointmentSchema>;

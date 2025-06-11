@@ -1,5 +1,5 @@
+import { DEFAULT_SIZE } from "@/domain/services/id-generator.service";
 import { z } from "zod";
-import { DEFAULT_SIZE } from "../services/id-generator.service";
 
 export const idSchema = (type?: string) => {
   const _type = type ?? "";

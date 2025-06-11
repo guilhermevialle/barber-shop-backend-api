@@ -1,4 +1,4 @@
-import { idSchema } from "@/domain/utils/id-schema";
+import { idSchema } from "@/domain/types/shared-types/id.types";
 import { z } from "zod";
 
 export const createAppointmentDtoSchema = z.object({

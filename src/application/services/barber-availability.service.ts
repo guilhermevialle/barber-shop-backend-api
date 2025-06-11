@@ -1,5 +1,5 @@
 import { IBarberAvailabilityService } from "@/application/interfaces/services/barber-availability-service.interface";
-import { MIN_SLOT_DURATION } from "@/domain/types/entity-types/service.types";
+import { MIN_DURATION_IN_MINUTES } from "@/domain/types/shared-types/duration.types";
 import { Time } from "@/domain/value-objects/time.vo";
 import { IAppointmentRepository } from "@/infra/interfaces/repositories/appointment-repository.interface";
 import { IBarberRepository } from "@/infra/interfaces/repositories/barber-repository.interface";
@@ -41,8 +41,8 @@ export class BarberAvailabilityService implements IBarberAvailabilityService {
 
       for (
         let time = shift.startTime;
-        time.addMinutes(MIN_SLOT_DURATION).isLessOrEqual(shift.endTime);
-        time = time.addMinutes(30)
+        time.addMinutes(MIN_DURATION_IN_MINUTES).isLessOrEqual(shift.endTime);
+        time = time.addMinutes(MIN_DURATION_IN_MINUTES)
       ) {
         const conflict = appointments.some((appointment) =>
           Time.create(appointment.startAt).isEqual(time)
@@ -56,7 +56,7 @@ export class BarberAvailabilityService implements IBarberAvailabilityService {
           );
           if (conflictingAppointment) {
             time = time.addMinutes(
-              conflictingAppointment.durationInMinutes - 30
+              conflictingAppointment.durationInMinutes - MIN_DURATION_IN_MINUTES
             );
           }
         }

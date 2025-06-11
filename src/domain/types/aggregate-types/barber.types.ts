@@ -1,10 +1,10 @@
 import { Workday } from "@/domain/entities/workday.entity";
-import { idSchema } from "@/domain/utils/id-schema";
+import { idSchema } from "@/domain/types/shared-types/id.types";
 import { Username } from "@/domain/value-objects/username.vo";
 import { z } from "zod";
 
 export const partialBarberSchema = z.object({
-  id: idSchema().optional(),
+  id: idSchema("barber").optional(),
 });
 
 export const requiredBarberSchema = z.object({

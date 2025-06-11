@@ -1,12 +1,11 @@
-import { idSchema } from "@/domain/utils/id-schema";
+import { idSchema } from "@/domain/types/shared-types/id.types";
 import { z } from "zod";
+import { durationInMinutesSchema } from "../shared-types/duration.types";
+import { priceInCentsSchema } from "../shared-types/price.types";
 
 export const partialServiceSchema = z.object({
-  id: idSchema().optional(),
+  id: idSchema("service").optional(),
 });
-
-export const MIN_SLOT_DURATION = 30;
-export const MAX_SLOT_DURATION = 90;
 
 export const requiredServiceSchema = z.object({
   type: z
@@ -16,20 +15,8 @@ export const requiredServiceSchema = z.object({
     })
     .min(3)
     .max(50),
-  priceInCents: z
-    .number({
-      required_error: "Price is required",
-      invalid_type_error: "Price must be a number",
-    })
-    .min(100),
-  durationInMinutes: z
-    .number({
-      required_error: "Duration is required",
-      invalid_type_error: "Duration must be a number",
-    })
-    .min(MIN_SLOT_DURATION)
-    .max(MAX_SLOT_DURATION)
-    .refine((value) => value % 30 === 0, "Duration must be a multiple of 30"),
+  priceInCents: priceInCentsSchema,
+  durationInMinutes: durationInMinutesSchema,
 });
 
 export type PartialServiceProps = z.infer<typeof partialServiceSchema>;

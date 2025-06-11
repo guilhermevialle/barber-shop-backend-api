@@ -1,9 +1,9 @@
 import { WorkShift } from "@/domain/entities/work-shift.entity";
-import { idSchema } from "@/domain/utils/id-schema";
+import { idSchema } from "@/domain/types/shared-types/id.types";
 import { z } from "zod";
 
 export const partialWorkdaySchema = z.object({
-  id: idSchema().optional(),
+  id: idSchema("workday").optional(),
 });
 
 export const requiredWorkdaySchema = z.object({

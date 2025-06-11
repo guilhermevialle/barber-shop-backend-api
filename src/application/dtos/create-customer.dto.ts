@@ -1,4 +1,4 @@
-import { passwordSchema } from "@/domain/types/value-object-types/password.types";
+import { passwordSchema } from "@/domain/types/shared-types/password.types";
 import { usernameSchema } from "@/domain/types/value-object-types/username.types";
 import { z } from "zod";
 
