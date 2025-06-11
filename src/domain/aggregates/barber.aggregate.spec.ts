@@ -92,9 +92,12 @@ describe("Barber Aggregate", () => {
   });
 
   it("should add a new workday", () => {
+    const b = Barber.create({ name: "Addy", username, workdays: [] });
+    expect(b.workdays).toHaveLength(0);
+
     const newWorkday = Workday.restore({
       id: idGeneratorService.generateDefault(),
-      barberId,
+      barberId: b.id,
       weekday: 1,
       shifts: [
         WorkShift.create({
@@ -104,9 +107,6 @@ describe("Barber Aggregate", () => {
         }),
       ],
     });
-
-    const b = Barber.create({ name: "Addy", username, workdays: [] });
-    expect(b.workdays).toHaveLength(0);
 
     b.addWorkday(newWorkday);
     expect(b.workdays).toHaveLength(1);
