@@ -3,7 +3,7 @@ import { WorkShift } from "@/domain/entities/work-shift.entity";
 import { WorkdayFactory } from "@/domain/helpers/workday-factory";
 import { idGeneratorService } from "@/domain/services/id-generator.service";
 import { Username } from "@/domain/value-objects/username.vo";
-import { IBarberRepository } from "@/interfaces/repositories/barber-repository.interface";
+import { IBarberRepository } from "@/infra/interfaces/repositories/barber-repository.interface";
 
 export const barberTester = Barber.create({
   name: "Barber for Tests",

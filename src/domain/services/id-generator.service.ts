@@ -1,4 +1,4 @@
-import { IIdGeneratorService } from "@/interfaces/services/id-generator-service.interface";
+import { IIdGeneratorService } from "@/domain/interfaces/services/id-generator-service.interface";
 import { nanoid } from "nanoid";
 
 export const DEFAULT_SIZE = 21;

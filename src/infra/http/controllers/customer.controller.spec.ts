@@ -1,4 +1,4 @@
-import { createTestApp } from "@/../tests/create-test-app";
+import { createTestApp } from "@/main/helpers/create-test-app";
 import request from "supertest";
 import { describe, expect, it } from "vitest";
 

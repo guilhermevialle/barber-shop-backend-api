@@ -1,6 +1,6 @@
 import { Workday } from "@/domain/entities/workday.entity";
+import { IIdGeneratorService } from "@/domain/interfaces/services/id-generator-service.interface";
 import { Time } from "@/domain/value-objects/time.vo";
-import { IIdGeneratorService } from "@/interfaces/services/id-generator-service.interface";
 import { WorkShift } from "../entities/work-shift.entity";
 
 interface Props {

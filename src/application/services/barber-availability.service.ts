@@ -1,8 +1,8 @@
+import { IBarberAvailabilityService } from "@/application/interfaces/services/barber-availability-service.interface";
 import { MIN_SLOT_DURATION } from "@/domain/types/entity-types/service.types";
 import { Time } from "@/domain/value-objects/time.vo";
-import { IAppointmentRepository } from "@/interfaces/repositories/appointment-repository.interface";
-import { IBarberRepository } from "@/interfaces/repositories/barber-repository.interface";
-import { IBarberAvailabilityService } from "@/interfaces/services/barber-availability-service.interface";
+import { IAppointmentRepository } from "@/infra/interfaces/repositories/appointment-repository.interface";
+import { IBarberRepository } from "@/infra/interfaces/repositories/barber-repository.interface";
 import { endOfDay, getDay, startOfDay } from "date-fns";
 
 export class BarberAvailabilityService implements IBarberAvailabilityService {

@@ -1,6 +1,6 @@
 import { Customer } from "@/domain/entities/customer.entity";
 import { Username } from "@/domain/value-objects/username.vo";
-import { ICustomerRepository } from "@/interfaces/repositories/customer-repository.interface";
+import { ICustomerRepository } from "@/infra/interfaces/repositories/customer-repository.interface";
 
 export const customerTester = Customer.create({
   name: "Customer for Tests",

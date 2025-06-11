@@ -1,5 +1,5 @@
-import { createTestApp } from "@/../tests/create-test-app";
 import { barberTester } from "@/infra/repositories/in-memory/in-memory-barber.repository";
+import { createTestApp } from "@/main/helpers/create-test-app";
 import { addDays } from "date-fns";
 import request from "supertest";
 import { describe, expect, it } from "vitest";

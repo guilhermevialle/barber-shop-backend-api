@@ -1,5 +1,5 @@
 import { Service } from "@/domain/entities/service.entity";
-import { IServiceRepository } from "@/interfaces/repositories/service-repository.interface";
+import { IServiceRepository } from "@/infra/interfaces/repositories/service-repository.interface";
 import { toCents } from "@/utils/to-cents";
 
 export const serviceTester = Service.create({

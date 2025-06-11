@@ -1,5 +1,5 @@
 import { Appointment } from "@/domain/entities/appointment.entity";
-import { IAppointmentRepository } from "@/interfaces/repositories/appointment-repository.interface";
+import { IAppointmentRepository } from "@/infra/interfaces/repositories/appointment-repository.interface";
 import { areIntervalsOverlapping } from "date-fns";
 
 export class InMemoryAppointmentRepository implements IAppointmentRepository {

@@ -1,14 +1,14 @@
+import { IBarberAvailabilityService } from "@/application/interfaces/services/barber-availability-service.interface";
 import { Barber } from "@/domain/aggregates/barber.aggregate";
 import { Appointment } from "@/domain/entities/appointment.entity";
 import { DateFactory } from "@/domain/helpers/date-factory";
 import { WorkdayFactory } from "@/domain/helpers/workday-factory";
 import { idGeneratorService } from "@/domain/services/id-generator.service";
 import { Username } from "@/domain/value-objects/username.vo";
+import { IAppointmentRepository } from "@/infra/interfaces/repositories/appointment-repository.interface";
+import { IBarberRepository } from "@/infra/interfaces/repositories/barber-repository.interface";
 import { InMemoryAppointmentRepository } from "@/infra/repositories/in-memory/in-memory-appointment.repository";
 import { InMemoryBarberRepository } from "@/infra/repositories/in-memory/in-memory-barber.repository";
-import { IAppointmentRepository } from "@/interfaces/repositories/appointment-repository.interface";
-import { IBarberRepository } from "@/interfaces/repositories/barber-repository.interface";
-import { IBarberAvailabilityService } from "@/interfaces/services/barber-availability-service.interface";
 import { addDays } from "date-fns";
 import { beforeEach, describe, expect, it } from "vitest";
 import { BarberAvailabilityService } from "./barber-availability.service";

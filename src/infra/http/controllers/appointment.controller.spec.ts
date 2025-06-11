@@ -1,8 +1,8 @@
-import { createTestApp } from "@/../tests/create-test-app";
 import { DateFactory } from "@/domain/helpers/date-factory";
 import { barberTester } from "@/infra/repositories/in-memory/in-memory-barber.repository";
 import { customerTester } from "@/infra/repositories/in-memory/in-memory-customer.repository";
 import { serviceTester } from "@/infra/repositories/in-memory/in-memory-service.repository";
+import { createTestApp } from "@/main/helpers/create-test-app";
 import request from "supertest";
 import { describe, expect, it } from "vitest";
 

@@ -6,7 +6,7 @@ import { Workday } from "@/domain/entities/workday.entity";
 import { idGeneratorService } from "@/domain/services/id-generator.service";
 import { Time } from "@/domain/value-objects/time.vo";
 import { Username } from "@/domain/value-objects/username.vo";
-import { IBarberRepository } from "@/interfaces/repositories/barber-repository.interface";
+import { IBarberRepository } from "@/infra/interfaces/repositories/barber-repository.interface";
 
 type Request = CreateBarberDto;
 type Response = Barber;

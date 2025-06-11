@@ -1,5 +1,5 @@
 import { Barber } from "@/domain/aggregates/barber.aggregate";
-import { IBarberRepository } from "@/interfaces/repositories/barber-repository.interface";
+import { IBarberRepository } from "@/infra/interfaces/repositories/barber-repository.interface";
 
 type Response = Barber[];
 

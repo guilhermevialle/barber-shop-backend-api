@@ -4,12 +4,12 @@ import {
   BarberNotFoundError,
 } from "@/application/errors/barber-errors";
 import { ServiceNotFoundError } from "@/application/errors/service-errors";
+import { IBarberAvailabilityService } from "@/application/interfaces/services/barber-availability-service.interface";
 import { Appointment } from "@/domain/entities/appointment.entity";
-import { IAppointmentRepository } from "@/interfaces/repositories/appointment-repository.interface";
-import { IBarberRepository } from "@/interfaces/repositories/barber-repository.interface";
-import { ICustomerRepository } from "@/interfaces/repositories/customer-repository.interface";
-import { IServiceRepository } from "@/interfaces/repositories/service-repository.interface";
-import { IBarberAvailabilityService } from "@/interfaces/services/barber-availability-service.interface";
+import { IAppointmentRepository } from "@/infra/interfaces/repositories/appointment-repository.interface";
+import { IBarberRepository } from "@/infra/interfaces/repositories/barber-repository.interface";
+import { ICustomerRepository } from "@/infra/interfaces/repositories/customer-repository.interface";
+import { IServiceRepository } from "@/infra/interfaces/repositories/service-repository.interface";
 import { addMinutes } from "date-fns";
 import { CustomerNotFoundError } from "../errors/customer-errors";
 

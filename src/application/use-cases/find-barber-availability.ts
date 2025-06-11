@@ -1,5 +1,5 @@
-import { IBarberRepository } from "@/interfaces/repositories/barber-repository.interface";
-import { IBarberAvailabilityService } from "@/interfaces/services/barber-availability-service.interface";
+import { IBarberAvailabilityService } from "@/application/interfaces/services/barber-availability-service.interface";
+import { IBarberRepository } from "@/infra/interfaces/repositories/barber-repository.interface";
 import { isPast } from "date-fns";
 import { BarberNotFoundError } from "../errors/barber-errors";
 import { InvalidDateError } from "../errors/shared-errors";
