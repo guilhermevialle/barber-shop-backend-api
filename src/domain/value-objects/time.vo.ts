@@ -1,4 +1,4 @@
-import { TimeInput } from "../types/time.types";
+import { TimeInput } from "../types/value-object-types/time.types";
 import { parseTimeInput } from "../utils/parse-time-input";
 
 /**

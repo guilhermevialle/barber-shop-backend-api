@@ -2,7 +2,7 @@ import { addDays, subMinutes } from "date-fns";
 import { describe, expect, it } from "vitest";
 import { DateFactory } from "../helpers/date-factory";
 import { idGeneratorService } from "../services/id-generator.service";
-import { AppointmentProps } from "../types/appointment.types";
+import { AppointmentProps } from "../types/entity-types/appointment.types";
 import { Appointment } from "./appointment.entity";
 
 const tomorrow = addDays(new Date(), 1).getDate();

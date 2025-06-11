@@ -1,7 +1,7 @@
+import { idSchema } from "@/domain/utils/id-schema";
+import { Time } from "@/domain/value-objects/time.vo";
 import { differenceInDays, isPast } from "date-fns";
 import { z } from "zod";
-import { idSchema } from "../utils/id-schema";
-import { Time } from "../value-objects/time.vo";
 
 export const partialAppointmentSchema = z.object({
   id: idSchema().optional(),

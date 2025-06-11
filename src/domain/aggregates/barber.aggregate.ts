@@ -5,7 +5,7 @@ import {
   BarberProps,
   barberSchema,
   RequiredBarberProps,
-} from "../types/barber.types";
+} from "../types/aggregate-types/barber.types";
 
 export class Barber {
   private props: Required<BarberProps>;

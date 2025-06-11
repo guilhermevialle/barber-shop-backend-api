@@ -1,4 +1,4 @@
-import { MIN_SLOT_DURATION } from "@/domain/types/service.types";
+import { MIN_SLOT_DURATION } from "@/domain/types/entity-types/service.types";
 import { Time } from "@/domain/value-objects/time.vo";
 import { IAppointmentRepository } from "@/interfaces/repositories/appointment-repository.interface";
 import { IBarberRepository } from "@/interfaces/repositories/barber-repository.interface";

@@ -1,4 +1,4 @@
-import { usernameSchema } from "@/domain/types/username.types";
+import { usernameSchema } from "@/domain/types/value-object-types/username.types";
 import { z } from "zod";
 
 export const createCustomerDtoSchema = z.object({

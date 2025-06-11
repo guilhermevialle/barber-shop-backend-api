@@ -4,7 +4,7 @@ import {
   TimeInput,
   timeNumberSchema,
   timeStringSchema,
-} from "../types/time.types";
+} from "../types/value-object-types/time.types";
 
 export function parseTimeInput(input: TimeInput): number {
   if (input instanceof Date) {

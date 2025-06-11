@@ -1,5 +1,5 @@
+import { idSchema } from "@/domain/utils/id-schema";
 import { z } from "zod";
-import { idSchema } from "../utils/id-schema";
 
 export const partialBarberServiceSchema = z.object({
   id: idSchema().optional(),

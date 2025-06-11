@@ -3,7 +3,7 @@ import {
   RequiredServiceProps,
   ServiceProps,
   serviceSchema,
-} from "../types/service.types";
+} from "../types/entity-types/service.types";
 
 export class Service {
   private props: Required<ServiceProps>;

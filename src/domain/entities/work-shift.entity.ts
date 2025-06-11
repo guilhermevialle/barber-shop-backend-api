@@ -4,7 +4,7 @@ import {
   RequiredWorkShiftProps,
   WorkShiftProps,
   workShiftSchema,
-} from "../types/work-shift.types";
+} from "../types/entity-types/work-shift.types";
 import { Time } from "../value-objects/time.vo";
 
 export class WorkShift {

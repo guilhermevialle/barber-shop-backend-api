@@ -4,7 +4,7 @@ import {
   RequiredWorkdayProps,
   WorkdayProps,
   workdaySchema,
-} from "../types/workday.types";
+} from "../types/entity-types/workday.types";
 import { Time } from "../value-objects/time.vo";
 import { WorkShift } from "./work-shift.entity";
 

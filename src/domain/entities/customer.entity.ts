@@ -3,7 +3,7 @@ import {
   CustomerProps,
   customerSchema,
   RequiredCustomerProps,
-} from "../types/customer.types";
+} from "../types/entity-types/customer.types";
 
 export class Customer {
   private props: Required<CustomerProps>;

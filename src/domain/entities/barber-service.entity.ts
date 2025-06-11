@@ -3,7 +3,7 @@ import {
   BarberServiceProps,
   barberServiceSchema,
   RequiredBarberServiceProps,
-} from "../types/barber-service.types";
+} from "../types/service-types/barber-service.types";
 
 export class BarberService {
   private props: Required<BarberServiceProps>;

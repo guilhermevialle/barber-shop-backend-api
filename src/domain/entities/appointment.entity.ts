@@ -4,7 +4,7 @@ import {
   AppointmentProps,
   appointmentSchema,
   RequiredAppointmentProps,
-} from "../types/appointment.types";
+} from "../types/entity-types/appointment.types";
 import { Time } from "../value-objects/time.vo";
 
 /**

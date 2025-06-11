@@ -1,4 +1,4 @@
-import { usernameSchema } from "../types/username.types";
+import { usernameSchema } from "../types/value-object-types/username.types";
 
 export class Username {
   private _value: string;

@@ -1,6 +1,6 @@
+import { idSchema } from "@/domain/utils/id-schema";
+import { Time } from "@/domain/value-objects/time.vo";
 import { z } from "zod";
-import { idSchema } from "../utils/id-schema";
-import { Time } from "../value-objects/time.vo";
 
 export const partialWorkShiftSchema = z.object({
   id: idSchema().optional(),
