@@ -6,11 +6,11 @@ import {
 import { ServiceNotFoundError } from "@/application/errors/service-errors";
 import { IBarberAvailabilityService } from "@/application/interfaces/services/barber-availability-service.interface";
 import { Appointment } from "@/domain/entities/appointment.entity";
+import { Time } from "@/domain/value-objects/time.vo";
 import { IAppointmentRepository } from "@/infra/interfaces/repositories/appointment-repository.interface";
 import { IBarberRepository } from "@/infra/interfaces/repositories/barber-repository.interface";
 import { ICustomerRepository } from "@/infra/interfaces/repositories/customer-repository.interface";
 import { IServiceRepository } from "@/infra/interfaces/repositories/service-repository.interface";
-import { addMinutes } from "date-fns";
 import { CustomerNotFoundError } from "../errors/customer-errors";
 
 type Request = CreateAppointmentDto;
@@ -45,16 +45,17 @@ export class CreateAppointment {
     if (!customer)
       throw new CustomerNotFoundError(`Customer ${customerId} not found`);
 
-    const barberIsAvailable =
-      await this.barberAvailabilityService.isAvailableInDateRange(
-        barberId,
-        startAt,
-        addMinutes(startAt, service.durationInMinutes)
+    const availableTimeSlots =
+      await this.barberAvailabilityService.getAvailableTimeSlotsByDate(
+        barber.id,
+        startAt
       );
 
-    if (!barberIsAvailable)
+    const appointmentTime = Time.create(startAt).formatted;
+
+    if (!availableTimeSlots.includes(appointmentTime))
       throw new BarberNotAvailableError(
-        "Barber is not available in the selected time slot"
+        `Barber ${barberId} is not available at ${appointmentTime} of this day`
       );
 
     const appointment = Appointment.create({

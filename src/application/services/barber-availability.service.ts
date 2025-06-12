@@ -11,7 +11,28 @@ export class BarberAvailabilityService implements IBarberAvailabilityService {
     private readonly appointmentRepo: IAppointmentRepository
   ) {}
 
-  async isAvailableByWeekday(
+  async isAvailableInTimeRange(
+    barberId: string,
+    startAt: Date,
+    endAt: Date
+  ): Promise<boolean> {
+    const overlappingAppointments =
+      await this.appointmentRepo.findOverlappingByBarber(
+        barberId,
+        startAt,
+        endAt,
+        { inclusive: false }
+      );
+
+    return overlappingAppointments.length === 0;
+  }
+
+  async isWorkingByDate(barberId: string, date: Date): Promise<boolean> {
+    const weekday = getDay(date);
+    return this.isWorkingByWeekday(barberId, weekday);
+  }
+
+  async isWorkingByWeekday(
     barberId: string,
     weekday: number
   ): Promise<boolean> {
@@ -32,34 +53,31 @@ export class BarberAvailabilityService implements IBarberAvailabilityService {
       this.barberRepo.findShiftsByWeekday(barberId, weekday),
     ]);
 
-    const slots = shifts.flatMap((shift) => {
-      const timeSlots: string[] = [];
+    const bookedSlotsMap = new Map<string, number>(
+      appointments.map((app) => [
+        Time.create(app.startAt).toString(),
+        app.durationInMinutes,
+      ])
+    );
 
+    const slots: string[] = [];
+
+    for (const shift of shifts) {
       for (
         let time = shift.startTime;
         time.addMinutes(MIN_DURATION_IN_MINUTES).isLessOrEqual(shift.endTime);
         time = time.addMinutes(MIN_DURATION_IN_MINUTES)
       ) {
-        const conflict = appointments.some((appointment) =>
-          Time.create(appointment.startAt).isEqual(time)
-        );
+        const timeStr = time.toString();
 
-        if (!conflict) {
-          timeSlots.push(time.toString());
+        if (!bookedSlotsMap.has(timeStr)) {
+          slots.push(timeStr);
         } else {
-          const conflictingAppointment = appointments.find((appointment) =>
-            Time.create(appointment.startAt).isEqual(time)
-          );
-          if (conflictingAppointment) {
-            time = time.addMinutes(
-              conflictingAppointment.durationInMinutes - MIN_DURATION_IN_MINUTES
-            );
-          }
+          const bookedDuration = bookedSlotsMap.get(timeStr)!;
+          time = time.addMinutes(bookedDuration - MIN_DURATION_IN_MINUTES);
         }
       }
-
-      return timeSlots;
-    });
+    }
 
     return slots;
   }

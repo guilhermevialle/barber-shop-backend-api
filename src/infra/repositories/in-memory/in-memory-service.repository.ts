@@ -8,8 +8,14 @@ export const serviceTester = Service.create({
   durationInMinutes: 30,
 });
 
+export const serviceTester2 = Service.create({
+  type: "Beard Trim",
+  priceInCents: toCents(50),
+  durationInMinutes: 45,
+});
+
 export class InMemoryServiceRepository implements IServiceRepository {
-  private storage: Service[] = [serviceTester];
+  private storage: Service[] = [serviceTester, serviceTester2];
 
   async findAll(): Promise<Service[]> {
     return this.storage;

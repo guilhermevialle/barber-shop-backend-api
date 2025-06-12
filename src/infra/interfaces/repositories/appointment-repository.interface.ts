@@ -4,6 +4,7 @@ export interface IAppointmentRepository {
   save(appointment: Appointment): Promise<void>;
   update(appointment: Appointment): Promise<void>;
   findById(id: string): Promise<Appointment | null>;
+  findManyByBarberAndDate(barberId: string, date: Date): Promise<Appointment[]>;
   findOverlappingByBarber(
     barberId: string,
     start: Date,

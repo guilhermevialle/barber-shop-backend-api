@@ -5,6 +5,17 @@ import { areIntervalsOverlapping } from "date-fns";
 export class InMemoryAppointmentRepository implements IAppointmentRepository {
   private storage: Appointment[] = [];
 
+  async findManyByBarberAndDate(
+    barberId: string,
+    date: Date
+  ): Promise<Appointment[]> {
+    return this.storage.filter(
+      (appointment) =>
+        appointment.barberId === barberId &&
+        appointment.startAt.getDate() === date.getDate()
+    );
+  }
+
   async findCancelledByBarber(barberId: string): Promise<Appointment[]> {
     return this.storage.filter(
       (appointment) =>
