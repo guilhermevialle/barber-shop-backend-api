@@ -12,7 +12,7 @@ import {
 import { beforeEach, describe, expect, it } from "vitest";
 import { CreateAppointment } from "./create-appointment";
 
-describe("Create Appointment Use Case", () => {
+describe("CreateAppointment Use Case", () => {
   let useCase: CreateAppointment;
   let deps: IDependenciesFactory;
   let repos: IDependenciesFactory["repos"];

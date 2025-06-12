@@ -5,7 +5,7 @@ import {
 import { beforeEach, describe, expect, it } from "vitest";
 import { CreateBarber } from "./create-barber";
 
-describe("Create Barber Use Case", () => {
+describe("CreateBarber Use Case", () => {
   let useCase: CreateBarber;
   let deps: IDependenciesFactory;
   let repos: IDependenciesFactory["repos"];
