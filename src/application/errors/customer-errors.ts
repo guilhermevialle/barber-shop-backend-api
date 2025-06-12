@@ -20,3 +20,13 @@ export class CustomerNotFoundError extends ApplicationError {
     });
   }
 }
+
+export class UserNotFoundError extends ApplicationError {
+  constructor(message?: string) {
+    super({
+      message: message ?? "User not found",
+      errorCode: ApplicationErrorCode.USER_NOT_FOUND,
+      statusCode: 404,
+    });
+  }
+}
