@@ -2,7 +2,10 @@ import { addDays, subMinutes } from "date-fns";
 import { describe, expect, it } from "vitest";
 import { DateFactory } from "../helpers/date-factory";
 import { idGeneratorService } from "../services/id-generator.service";
-import { AppointmentProps } from "../types/entity-types/appointment.types";
+import {
+  AppointmentProps,
+  AppointmentStatus,
+} from "../types/entity-types/appointment.types";
 import { Appointment } from "./appointment.entity";
 
 const tomorrow = addDays(new Date(), 1).getDate();
@@ -58,6 +61,7 @@ describe("Appointment Entity", () => {
   it("should restore an appointment with an existing id", () => {
     const propsWithId = {
       ...baseProps,
+      status: AppointmentStatus.CONFIRMED,
       id: "apt_12345678901234567",
     };
 

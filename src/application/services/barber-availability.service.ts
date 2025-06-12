@@ -28,11 +28,7 @@ export class BarberAvailabilityService implements IBarberAvailabilityService {
     const dayEnd = endOfDay(date);
 
     const [appointments, shifts] = await Promise.all([
-      this.appointmentRepo.findOverlappingAppointmentsByBarber(
-        barberId,
-        dayStart,
-        dayEnd
-      ),
+      this.appointmentRepo.findOverlappingByBarber(barberId, dayStart, dayEnd),
       this.barberRepo.findShiftsByWeekday(barberId, weekday),
     ]);
 
@@ -74,7 +70,7 @@ export class BarberAvailabilityService implements IBarberAvailabilityService {
     endAt: Date
   ): Promise<boolean> {
     const overlappingAppointments =
-      await this.appointmentRepo.findOverlappingAppointmentsByBarber(
+      await this.appointmentRepo.findOverlappingByBarber(
         barberId,
         startAt,
         endAt,

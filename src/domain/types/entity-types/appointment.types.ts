@@ -5,8 +5,21 @@ import { z } from "zod";
 import { durationInMinutesSchema } from "../shared-types/duration.types";
 import { priceInCentsSchema } from "../shared-types/price.types";
 
+export enum AppointmentStatus {
+  CONFIRMED = "CONFIRMED",
+  CANCELLED = "CANCELLED",
+  FINISHED = "FINISHED",
+  EXPIRED = "EXPIRED",
+}
+
 export const partialAppointmentSchema = z.object({
   id: idSchema().optional(),
+  status: z
+    .nativeEnum(AppointmentStatus, {
+      invalid_type_error: "Status must be a valid AppointmentStatus",
+      required_error: "Status is required",
+    })
+    .optional(),
 });
 
 export const requiredAppointmentSchema = z.object({

@@ -1,5 +1,6 @@
 import { Barber } from "@/domain/aggregates/barber.aggregate";
 import { WorkShift } from "@/domain/entities/work-shift.entity";
+import { Workday } from "@/domain/entities/workday.entity";
 import { WorkdayFactory } from "@/domain/helpers/workday-factory";
 import { idGeneratorService } from "@/domain/services/id-generator.service";
 import { Username } from "@/domain/value-objects/username.vo";
@@ -30,6 +31,23 @@ barberTester.addWorkdays(
 
 export class InMemoryBarberRepository implements IBarberRepository {
   private storage: Barber[] = [barberTester];
+
+  async findWorkdays(barberId: string): Promise<Workday[]> {
+    const barber = this.storage.find((barber) => barber.id === barberId);
+
+    return barber?.workdays ?? [];
+  }
+
+  async findShiftsByWorkday(
+    barberId: string,
+    workdayId: string
+  ): Promise<WorkShift[]> {
+    const barber = this.storage.find((barber) => barber.id === barberId);
+
+    return (
+      barber?.workdays.find((workday) => workday.id === workdayId)?.shifts ?? []
+    );
+  }
 
   async findShiftsByWeekday(id: string, weekday: number): Promise<WorkShift[]> {
     const barber = this.storage.find((barber) => barber.id === id);

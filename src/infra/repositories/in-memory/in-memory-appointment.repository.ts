@@ -5,7 +5,13 @@ import { areIntervalsOverlapping } from "date-fns";
 export class InMemoryAppointmentRepository implements IAppointmentRepository {
   private storage: Appointment[] = [];
 
-  async findOverlappingAppointmentsByBarber(
+  async findManyByService(serviceId: string): Promise<Appointment[]> {
+    return this.storage.filter(
+      (appointment) => appointment.serviceId === serviceId
+    );
+  }
+
+  async findOverlappingByBarber(
     barberId: string,
     start: Date,
     end: Date,
@@ -23,14 +29,6 @@ export class InMemoryAppointmentRepository implements IAppointmentRepository {
     });
   }
 
-  async clear(): Promise<void> {
-    this.storage = [];
-  }
-
-  async findAll(): Promise<Appointment[]> {
-    return this.storage;
-  }
-
   async findById(id: string): Promise<Appointment | null> {
     const appointment = this.storage.find(
       (appointment) => appointment.id === id
@@ -39,12 +37,16 @@ export class InMemoryAppointmentRepository implements IAppointmentRepository {
     return appointment ?? null;
   }
 
-  async findManyByBarberId(id: string): Promise<Appointment[]> {
-    return this.storage.filter((appointment) => appointment.barberId === id);
+  async findManyByBarber(barberId: string): Promise<Appointment[]> {
+    return this.storage.filter(
+      (appointment) => appointment.barberId === barberId
+    );
   }
 
-  async findManyByCustomerId(id: string): Promise<Appointment[]> {
-    return this.storage.filter((appointment) => appointment.customerId === id);
+  async findManyByCustomer(customerId: string): Promise<Appointment[]> {
+    return this.storage.filter(
+      (appointment) => appointment.customerId === customerId
+    );
   }
 
   async save(appointment: Appointment): Promise<void> {
@@ -59,5 +61,13 @@ export class InMemoryAppointmentRepository implements IAppointmentRepository {
     if (index === -1) return;
 
     this.storage[index] = appointment;
+  }
+
+  async clear(): Promise<void> {
+    this.storage = [];
+  }
+
+  async findAll(): Promise<Appointment[]> {
+    return this.storage;
   }
 }

@@ -4,7 +4,7 @@ export interface IAppointmentRepository {
   save(appointment: Appointment): Promise<void>;
   update(appointment: Appointment): Promise<void>;
   findById(id: string): Promise<Appointment | null>;
-  findOverlappingAppointmentsByBarber(
+  findOverlappingByBarber(
     barberId: string,
     start: Date,
     end: Date,
@@ -12,8 +12,9 @@ export interface IAppointmentRepository {
       inclusive?: boolean;
     }
   ): Promise<Appointment[]>;
-  findManyByCustomerId(id: string): Promise<Appointment[]>;
-  findManyByBarberId(id: string): Promise<Appointment[]>;
+  findManyByCustomer(customerId: string): Promise<Appointment[]>;
+  findManyByBarber(barberId: string): Promise<Appointment[]>;
+  findManyByService(serviceId: string): Promise<Appointment[]>;
   findAll(): Promise<Appointment[]>;
   clear(): Promise<void>;
 }
