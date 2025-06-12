@@ -12,6 +12,14 @@ export interface IAppointmentRepository {
       inclusive?: boolean;
     }
   ): Promise<Appointment[]>;
+  findCancelledByCustomer(customerId: string): Promise<Appointment[]>;
+  findConfirmedByCustomer(customerId: string): Promise<Appointment[]>;
+  findExpiredByCustomer(customerId: string): Promise<Appointment[]>;
+  findFinishedByCustomer(customerId: string): Promise<Appointment[]>;
+  findCancelledByBarber(barberId: string): Promise<Appointment[]>;
+  findConfirmedByBarber(barberId: string): Promise<Appointment[]>;
+  findExpiredByBarber(barberId: string): Promise<Appointment[]>;
+  findFinishedByBarber(barberId: string): Promise<Appointment[]>;
   findManyByCustomer(customerId: string): Promise<Appointment[]>;
   findManyByBarber(barberId: string): Promise<Appointment[]>;
   findManyByService(serviceId: string): Promise<Appointment[]>;

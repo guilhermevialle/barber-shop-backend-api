@@ -5,6 +5,62 @@ import { areIntervalsOverlapping } from "date-fns";
 export class InMemoryAppointmentRepository implements IAppointmentRepository {
   private storage: Appointment[] = [];
 
+  async findCancelledByBarber(barberId: string): Promise<Appointment[]> {
+    return this.storage.filter(
+      (appointment) =>
+        appointment.barberId === barberId && appointment.isCancelled
+    );
+  }
+
+  async findConfirmedByBarber(barberId: string): Promise<Appointment[]> {
+    return this.storage.filter(
+      (appointment) =>
+        appointment.barberId === barberId && !appointment.isConfirmed
+    );
+  }
+
+  async findExpiredByBarber(barberId: string): Promise<Appointment[]> {
+    return this.storage.filter(
+      (appointment) =>
+        appointment.barberId === barberId && !appointment.isExpired
+    );
+  }
+
+  async findFinishedByBarber(barberId: string): Promise<Appointment[]> {
+    return this.storage.filter(
+      (appointment) =>
+        appointment.barberId === barberId && !appointment.isFinished
+    );
+  }
+
+  async findCancelledByCustomer(customerId: string): Promise<Appointment[]> {
+    return this.storage.filter(
+      (appointment) =>
+        appointment.customerId === customerId && appointment.isCancelled
+    );
+  }
+
+  async findConfirmedByCustomer(customerId: string): Promise<Appointment[]> {
+    return this.storage.filter(
+      (appointment) =>
+        appointment.customerId === customerId && !appointment.isConfirmed
+    );
+  }
+
+  async findExpiredByCustomer(customerId: string): Promise<Appointment[]> {
+    return this.storage.filter(
+      (appointment) =>
+        appointment.customerId === customerId && !appointment.isExpired
+    );
+  }
+
+  async findFinishedByCustomer(customerId: string): Promise<Appointment[]> {
+    return this.storage.filter(
+      (appointment) =>
+        appointment.customerId === customerId && !appointment.isFinished
+    );
+  }
+
   async findManyByService(serviceId: string): Promise<Appointment[]> {
     return this.storage.filter(
       (appointment) => appointment.serviceId === serviceId
